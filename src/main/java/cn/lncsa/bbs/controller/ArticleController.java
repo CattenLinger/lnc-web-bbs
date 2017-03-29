@@ -53,6 +53,16 @@ public class ArticleController {
         return ResponseEntity.ok(new RexModel<>().setMessage(MessageStrings.SUCCESS));
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public @ResponseBody ResponseEntity getArticle(@PageableDefault Pageable pageable){
+        return ResponseEntity.ok(new RexModel<>(postContentSrv.findAll(pageable)));
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public @ResponseBody ResponseEntity getArticle(@PathVariable("id") Long articleId) throws EntityNotFoundException {
+        return ResponseEntity.ok(new RexModel<>(postContentSrv.get(articleId)));
+    }
+
     @RequestMapping(value = "/{id}",method = RequestMethod.PATCH)
     public @ResponseBody ResponseEntity modifyPost(@PathVariable("id") Long postId, @RequestBody RexModel<PostContent> rexModel, HttpSession session) throws EntityNotFoundException {
         Object sessionUser = session.getAttribute("current_user");
@@ -95,8 +105,12 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/comments/{id}", method = RequestMethod.DELETE)
-    public @ResponseBody ResponseEntity removeCommit(@PathVariable("id") Long id) throws EntityNotFoundException {
-        postContentSrv.deleteComment(postContentSrv.getComment(id));
+    public @ResponseBody ResponseEntity removeCommit(@PathVariable("id") Long id, HttpSession session) throws EntityNotFoundException {
+        Object sessionUser = session.getAttribute("current_user");
+        if(sessionUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        Comment comment = postContentSrv.getComment(id);
+        if(!((User)sessionUser).getId().equals(comment.getAuthor().getId())) postContentSrv.deleteComment(postContentSrv.getComment(id));
+        else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         return ResponseEntity.ok(new RexModel<>().setMessage(MessageStrings.SUCCESS));
     }
 }

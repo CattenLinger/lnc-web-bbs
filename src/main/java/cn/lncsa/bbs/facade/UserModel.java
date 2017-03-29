@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by catten on 3/29/17.
@@ -29,7 +30,7 @@ public class UserModel {
         this.id = (user.getId() == null ? null : user.getId());
         this.username = user.getUsername();
         this.groupName = (user.getUserGroup() != null ? user.getUserGroup().getName() : null);
-        List<UserProfileItem> userProfile = user.getProfile();
+        Set<UserProfileItem> userProfile = user.getProfile();
         if(userProfile != null && userProfile.size() > 0){
             information = new HashMap<>();
             for (UserProfileItem userProfileItem : userProfile){

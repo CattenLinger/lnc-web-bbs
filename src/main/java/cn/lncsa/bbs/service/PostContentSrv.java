@@ -67,4 +67,8 @@ public class PostContentSrv {
         PostContent postContent = get(articleId);
         return commentRepo.findByPostContent(postContent,pageable);
     }
+
+    public Page<PostContent> findAll(Pageable pageable) {
+        return postContentRepo.findAll(pageable);
+    }
 }
