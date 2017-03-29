@@ -42,8 +42,11 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public
     @ResponseBody
-    ResponseEntity register(@RequestBody RexModel<User> rexModel) throws DuplicateEntityException {
-        User submitUser = rexModel.getData();
+    ResponseEntity register(@RequestBody RexModel<UserModel> rexModel) throws DuplicateEntityException {
+        User submitUser = new User();
+        submitUser.setUsername(rexModel.getData().getUsername());
+        submitUser.setPassword(rexModel.getData().getPassword());
+
         if (submitUser.getUsername().matches("^[A-Za-z0-9_\\-@.,]{4,}$")
                 && submitUser.getPassword() != null
                 && submitUser.getPassword().length() >= 6) {
@@ -72,8 +75,8 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public
     @ResponseBody
-    ResponseEntity login(@RequestBody RexModel<User> rexModel, HttpSession session) throws EntityNotFoundException {
-        User hardToken = rexModel.getData();
+    ResponseEntity login(@RequestBody RexModel<UserModel> rexModel, HttpSession session) throws EntityNotFoundException {
+        UserModel hardToken = rexModel.getData();
         if (hardToken.getUsername() == null || hardToken.getPassword() == null)
             return ResponseEntity.badRequest().build();
         else {

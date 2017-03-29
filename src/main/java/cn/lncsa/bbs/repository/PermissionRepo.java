@@ -13,7 +13,7 @@ import java.util.Set;
 public interface PermissionRepo extends BaseRepository<Permission,Long> {
     @Modifying
     @Query("delete from Permission p where p.target = ?1 and p.url in ?2")
-    void deletePermissionByUrl(UserGroup userGroup, Set<String> permissionUrls);
+    void deletePermissionByUrl(UserGroup userGroup, Iterable<String> permissionUrls);
 
     @Query("select p from Permission p where p.target = ?1")
     Set<Permission> findByUserGroup(UserGroup userGroup);

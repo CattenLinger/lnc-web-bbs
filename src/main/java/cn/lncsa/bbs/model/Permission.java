@@ -1,5 +1,7 @@
 package cn.lncsa.bbs.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -71,6 +73,7 @@ public class Permission {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @JsonIgnore
     public UserGroup getTarget() {
         return target;
     }

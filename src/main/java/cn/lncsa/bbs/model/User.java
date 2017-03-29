@@ -43,6 +43,7 @@ public class User {
     }
 
     @Column(nullable = false)
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -52,7 +53,6 @@ public class User {
     }
 
     @OneToMany(mappedBy = "target")
-    @JsonIgnore
     public Set<UserProfileItem> getProfile() {
         return profile;
     }
@@ -62,7 +62,6 @@ public class User {
     }
 
     @ManyToOne
-    @JsonIgnore
     public UserGroup getUserGroup() {
         return userGroup;
     }

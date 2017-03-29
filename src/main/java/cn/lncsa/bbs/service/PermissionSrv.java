@@ -8,6 +8,7 @@ import cn.lncsa.bbs.repository.UserGroupRepo;
 import cn.lncsa.bbs.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -64,8 +65,13 @@ public class PermissionSrv {
         return permissionRepo.findByUserGroup(userGroup);
     }
 
-    public void removePermission(UserGroup userGroup, Set<String> permissionUrls){
+    @Transactional
+    public void removePermission(UserGroup userGroup, List<String> permissionUrls){
         if(userGroup.getPermissions() == null ) return;
         permissionRepo.deletePermissionByUrl(userGroup,permissionUrls);
+    }
+
+    public UserGroup findUserGroup(String name) {
+        return userGroupRepo.findByName(name);
     }
 }
