@@ -70,7 +70,7 @@ public class Permission {
     }
 
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     public UserGroup getTarget() {
         return target;
     }

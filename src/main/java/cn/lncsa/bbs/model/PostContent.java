@@ -64,7 +64,7 @@ public class PostContent {
     }
 
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     public User getAuthor() {
         return author;
     }

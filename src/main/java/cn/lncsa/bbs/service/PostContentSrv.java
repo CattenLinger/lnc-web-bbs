@@ -10,7 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by catten on 3/29/17.
@@ -41,7 +43,8 @@ public class PostContentSrv {
         return postContent;
     }
 
-    public List<String> getAllTopics() {
+    public Set<String> getAllTopics() {
+//        return new ArrayList<>();
         return postContentRepo.getAllTopics();
     }
 

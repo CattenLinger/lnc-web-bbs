@@ -1,7 +1,6 @@
 package cn.lncsa.bbs.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.istack.internal.Nullable;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -50,7 +49,7 @@ public class Comment {
     }
 
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     public User getAuthor() {
         return author;
     }
@@ -60,7 +59,7 @@ public class Comment {
     }
 
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     public PostContent getTarget() {
         return target;
     }

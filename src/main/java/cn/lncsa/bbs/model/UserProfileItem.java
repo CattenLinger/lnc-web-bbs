@@ -48,7 +48,7 @@ public class UserProfileItem {
     }
 
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     public User getTarget() {
         return target;
     }
