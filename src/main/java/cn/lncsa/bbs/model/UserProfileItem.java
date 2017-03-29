@@ -29,7 +29,7 @@ public class UserProfileItem {
         this.id = id;
     }
 
-    @Column(name = "profile_key")
+    @Column(name = "profile_key", nullable = false)
     public String getKey() {
         return key;
     }
@@ -48,6 +48,7 @@ public class UserProfileItem {
     }
 
     @ManyToOne
+    @Column(nullable = false)
     public User getTarget() {
         return target;
     }

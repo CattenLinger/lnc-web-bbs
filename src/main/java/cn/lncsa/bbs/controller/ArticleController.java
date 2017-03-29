@@ -8,6 +8,10 @@ import cn.lncsa.bbs.model.PostContent;
 import cn.lncsa.bbs.model.User;
 import cn.lncsa.bbs.service.PostContentSrv;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -68,11 +72,31 @@ public class ArticleController {
         return ResponseEntity.ok(new RexModel<>(postContentSrv.getAllTopics()));
     }
 
-    public @ResponseBody ResponseEntity commitArticle(Long articleId, RexModel<Comment> rexModel, HttpSession session) throws EntityNotFoundException {
+    @RequestMapping(value = "/{id}/comments", method = RequestMethod.POST)
+    public @ResponseBody ResponseEntity commitArticle(
+            @PathVariable("id") Long articleId,@RequestBody RexModel<Comment> rexModel, HttpSession session) throws EntityNotFoundException {
         PostContent postContent = postContentSrv.get(articleId);
         Object sessionUser = session.getAttribute("current_user");
         if(sessionUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        postContent.setAuthor((User)sessionUser);
+        Comment submitComment = rexModel.getData();
+
+        submitComment.setAuthor((User)sessionUser);
+        submitComment.setCreateDate(new Date());
+        submitComment.setTarget(postContent);
+
+        postContentSrv.saveComment(submitComment);
+        return ResponseEntity.ok(new RexModel<>().setMessage(MessageStrings.SUCCESS));
+    }
+
+    @RequestMapping(value = "/{id}/comments", method = RequestMethod.GET)
+    public @ResponseBody ResponseEntity getCommit(
+            @PathVariable("id") Long articleId, @PageableDefault Pageable pageable) throws EntityNotFoundException {
+        return ResponseEntity.ok(new RexModel<>(postContentSrv.getArticleComments(articleId, pageable)));
+    }
+
+    @RequestMapping(value = "/comments/{id}", method = RequestMethod.DELETE)
+    public @ResponseBody ResponseEntity removeCommit(@PathVariable("id") Long id) throws EntityNotFoundException {
+        postContentSrv.deleteComment(postContentSrv.getComment(id));
         return ResponseEntity.ok(new RexModel<>().setMessage(MessageStrings.SUCCESS));
     }
 }

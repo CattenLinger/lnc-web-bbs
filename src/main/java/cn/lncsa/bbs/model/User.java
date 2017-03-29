@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    private List<UserProfileItem> profile;
+    private Set<UserProfileItem> profile;
     private UserGroup userGroup;
 
     @Id
@@ -32,6 +33,7 @@ public class User {
         this.id = id;
     }
 
+    @Column(unique = true, nullable = false)
     public String getUsername() {
         return username;
     }
@@ -40,6 +42,7 @@ public class User {
         this.username = username;
     }
 
+    @Column(nullable = false)
     public String getPassword() {
         return password;
     }
@@ -50,11 +53,11 @@ public class User {
 
     @OneToMany(mappedBy = "target")
     @JsonIgnore
-    public List<UserProfileItem> getProfile() {
+    public Set<UserProfileItem> getProfile() {
         return profile;
     }
 
-    public void setProfile(List<UserProfileItem> profile) {
+    public void setProfile(Set<UserProfileItem> profile) {
         this.profile = profile;
     }
 

@@ -44,6 +44,7 @@ public class Permission {
         this.description = description;
     }
 
+    @Column(nullable = false)
     public String getUrl() {
         return url;
     }
@@ -69,6 +70,7 @@ public class Permission {
     }
 
     @ManyToOne
+    @Column(nullable = false)
     public UserGroup getTarget() {
         return target;
     }

@@ -26,6 +26,7 @@ public class UserGroup {
         this.id = id;
     }
 
+    @Column(nullable = false)
     public String getName() {
         return name;
     }

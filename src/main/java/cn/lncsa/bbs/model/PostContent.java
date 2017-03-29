@@ -36,6 +36,7 @@ public class PostContent {
         this.id = id;
     }
 
+    @Column(nullable = false)
     public String getTitle() {
         return title;
     }
@@ -53,6 +54,7 @@ public class PostContent {
     }
 
     @Lob
+    @Column(nullable = false)
     public String getContent() {
         return content;
     }
@@ -62,6 +64,7 @@ public class PostContent {
     }
 
     @ManyToOne
+    @Column(nullable = false)
     public User getAuthor() {
         return author;
     }
@@ -70,6 +73,8 @@ public class PostContent {
         this.author = author;
     }
 
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getCreateDate() {
         return createDate;
     }
@@ -95,6 +100,8 @@ public class PostContent {
         this.topics = topics;
     }
 
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getModifiedDate() {
         return modifiedDate;
     }
