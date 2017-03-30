@@ -36,8 +36,10 @@ public class ManagerController {
         this.permissionSrv = permissionSrv;
     }
 
-    @RequestMapping(value = "/user/{username}/group",method = RequestMethod.PATCH)
-    public @ResponseBody ResponseEntity grantUserGroup(
+    @RequestMapping(value = "/user/{username}/group", method = RequestMethod.PATCH)
+    public
+    @ResponseBody
+    ResponseEntity grantUserGroup(
             @PathVariable("username") String username, @RequestBody RexModel<String> rexModel) throws EntityNotFoundException {
         User user = userSrv.getByUsername(username);
         UserGroup userGroup = permissionSrv.getUserGroupByName(rexModel.getData());
@@ -49,36 +51,45 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "/group/{groupName}", method = RequestMethod.GET)
-    public ResponseEntity getUserGroup(@PathVariable("groupName") String userGroupName) throws EntityNotFoundException {
+    public @ResponseBody ResponseEntity getUserGroup(@PathVariable("groupName") String userGroupName) throws EntityNotFoundException {
         return ResponseEntity.ok(new RexModel<>(permissionSrv.getUserGroupByName(userGroupName)));
     }
 
     @RequestMapping(value = "/group", method = RequestMethod.PATCH)
-    public @ResponseBody ResponseEntity saveUserGroup(@RequestBody RexModel<UserGroup> rexModel){
+    public
+    @ResponseBody
+    ResponseEntity saveUserGroup(@RequestBody RexModel<UserGroup> rexModel) {
         UserGroup userGroup = rexModel.getData();
         UserGroup origin = permissionSrv.findUserGroup(userGroup.getName());
-        if(origin != null) origin.replace(userGroup); else origin = userGroup;
+        if (origin != null) origin.replace(userGroup);
+        else origin = userGroup;
         permissionSrv.saveUserGroup(origin);
         return ResponseEntity.ok(new RexModel<>().setMessage(MessageStrings.SUCCESS));
     }
 
     @RequestMapping(value = "/group/{groupName}/permissions", method = RequestMethod.PATCH)
-    public ResponseEntity changeGroupPermission(
-            @PathVariable("groupName") String userGroupName,@RequestBody RexModel<Set<Permission>> rexModel) throws EntityNotFoundException {
-        permissionSrv.changePermission(permissionSrv.getUserGroupByName(userGroupName),rexModel.getData());
+    public
+    @ResponseBody
+    ResponseEntity changeGroupPermission(
+            @PathVariable("groupName") String userGroupName, @RequestBody RexModel<Set<Permission>> rexModel) throws EntityNotFoundException {
+        permissionSrv.changePermission(permissionSrv.getUserGroupByName(userGroupName), rexModel.getData());
         return ResponseEntity.ok(new RexModel<>().setMessage(MessageStrings.SUCCESS));
     }
 
     @RequestMapping(value = "/group/{groupName}/permissions", method = RequestMethod.DELETE)
-    public ResponseEntity deletePermissionFromGroup(
-            @PathVariable("groupName") String userGroupName,@RequestBody RexModel<List<String>> permissionUrl) throws EntityNotFoundException {
+    public
+    @ResponseBody
+    ResponseEntity deletePermissionFromGroup(
+            @PathVariable("groupName") String userGroupName, @RequestBody RexModel<List<String>> permissionUrl) throws EntityNotFoundException {
         UserGroup userGroup = permissionSrv.getUserGroupByName(userGroupName);
-        permissionSrv.removePermission(userGroup,permissionUrl.getData());
+        permissionSrv.removePermission(userGroup, permissionUrl.getData());
         return ResponseEntity.ok(new RexModel<>().setMessage(MessageStrings.SUCCESS));
     }
 
-    @RequestMapping(value = "/user/{username}",method = RequestMethod.GET)
-    public ResponseEntity getUserInformation(@PathVariable("username") String username) throws EntityNotFoundException {
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResponseEntity getUserInformation(@PathVariable("username") String username) throws EntityNotFoundException {
         return ResponseEntity.ok(userSrv.getByUsername(username));
     }
 }

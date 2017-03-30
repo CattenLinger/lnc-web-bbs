@@ -1,6 +1,8 @@
 package cn.lncsa.bbs.facade;
 
 import cn.lncsa.bbs.model.PostContent;
+import cn.lncsa.bbs.model.User;
+import cn.lncsa.bbs.model.UserProfileItem;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -30,7 +32,19 @@ public class PostContentModel {
         this.id = postContent.getId();
         this.title = postContent.getTitle();
         this.subtitle = postContent.getSubtitle();
-        this.authorName = (postContent.getAuthor() == null ? null : postContent.getAuthor().getUsername());
+
+        if (postContent.getAuthor() != null){
+            User author = postContent.getAuthor();
+            if(author.getProfile() != null){
+                for (UserProfileItem profileItem : author.getProfile()){
+                    if(profileItem.getKey().equals(UserProfileItem.KEY_NAME)){
+                        this.authorName = profileItem.getValue();
+                    }
+                }
+            }
+            if(this.authorName == null) this.authorName = author.getUsername();
+        }
+
         this.createDate = postContent.getCreateDate();
         this.modifiedDate = postContent.getModifiedDate();
         this.status = postContent.getStatus();

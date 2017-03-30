@@ -1,5 +1,6 @@
 package cn.lncsa.bbs.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 public class UserProfileItem {
 
     public final static String KEY_SECRET = "secret";
+    public final static String KEY_NAME = "nickname";
 
     private Long id;
     private String key;
@@ -49,6 +51,7 @@ public class UserProfileItem {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @JsonIgnore
     public User getTarget() {
         return target;
     }

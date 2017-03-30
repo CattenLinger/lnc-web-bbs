@@ -3,7 +3,9 @@ package cn.lncsa.bbs.service;
 import cn.lncsa.bbs.exception.EntityNotFoundException;
 import cn.lncsa.bbs.model.User;
 import cn.lncsa.bbs.model.UserGroup;
+import cn.lncsa.bbs.model.UserProfileItem;
 import cn.lncsa.bbs.repository.UserGroupRepo;
+import cn.lncsa.bbs.repository.UserProfileItemRepo;
 import cn.lncsa.bbs.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserSrv {
 
-    private UserRepo userRepo;
+    public final static String SESSION_USER = "session_user";
 
+    private UserRepo userRepo;
     private PermissionSrv permissionSrv;
+    private UserProfileItemRepo userProfileItemRepo;
 
     @Autowired
     public void setUserRepo(UserRepo userRepo) {
@@ -26,6 +30,11 @@ public class UserSrv {
     @Autowired
     public void setPermissionSrv(PermissionSrv permissionSrv) {
         this.permissionSrv = permissionSrv;
+    }
+
+    @Autowired
+    public void setUserProfileItemRepo(UserProfileItemRepo userProfileItemRepo) {
+        this.userProfileItemRepo = userProfileItemRepo;
     }
 
     public User save(User user){
@@ -51,5 +60,13 @@ public class UserSrv {
     public void setUserGroup(User user, String userGroupName) throws EntityNotFoundException {
         user.setUserGroup(permissionSrv.getUserGroupByName(userGroupName));
         userRepo.save(user);
+    }
+
+    public void saveProfileItem(UserProfileItem userProfileItem) {
+        userProfileItemRepo.save(userProfileItem);
+    }
+
+    public void deleteProfileItem(UserProfileItem userProfileItem) {
+        userProfileItemRepo.delete(userProfileItem);
     }
 }

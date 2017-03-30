@@ -29,16 +29,6 @@ public class UserController {
         this.userSrv = userSrv;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String homepage() {
-        return "";
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String register() {
-        return "register";
-    }
-
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -82,7 +72,7 @@ public class UserController {
         else {
             User user = userSrv.getByUsername(hardToken.getUsername());
             if (user.getPassword().equals(hardToken.getPassword())) {
-                session.setAttribute("current_user", user);
+                session.setAttribute(UserSrv.SESSION_USER, user);
                 return ResponseEntity.ok(new RexModel().setMessage(MessageStrings.SUCCESS));
             } else {
                 return ResponseEntity.ok(new RexModel().setError(MessageStrings.PERMIT_TOKEN_NOT_MATCH));

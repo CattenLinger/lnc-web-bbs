@@ -52,7 +52,7 @@ public class User {
         this.password = password;
     }
 
-    @OneToMany(mappedBy = "target")
+    @OneToMany(mappedBy = "target", fetch = FetchType.EAGER)
     public Set<UserProfileItem> getProfile() {
         return profile;
     }
