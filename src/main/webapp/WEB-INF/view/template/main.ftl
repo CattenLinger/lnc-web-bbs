@@ -1,4 +1,7 @@
 <#global webroot=""/>
+<#global pkey_head_pic = "headPic",
+pkey_secret="secret",
+pkey_nickname="nickname"/>
 <#macro body title>
 <!doctype html>
 <html>
@@ -13,6 +16,14 @@
 <@_import_js></@_import_js>
 </body>
 </html>
+</#macro>
+
+<#macro cutString text length suffix>
+    <#if (text?length > length)>
+    ${text?html?replace("\n"," ")?substring(0,length - 1)}${suffix!""}
+    <#else >
+    ${text?html?replace("\n"," ")}
+    </#if>
 </#macro>
 
 <#macro defaultPager total current length path>

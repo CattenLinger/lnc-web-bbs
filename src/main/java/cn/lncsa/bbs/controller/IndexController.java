@@ -47,6 +47,11 @@ public class IndexController {
         this.permissionSrv = permissionSrv;
     }
 
+    /*
+    *
+    * Index page
+    *
+    * */
     @RequestMapping("/")
     public String index(@RequestParam(value = "refer", required = false)String refer, Model model){
         if(refer != null){
@@ -55,6 +60,12 @@ public class IndexController {
         return "index";
     }
 
+
+    /*
+    *
+    * Register
+    *
+    * */
     @RequestMapping(value = "/index/register", method = RequestMethod.GET)
     public String register() {
         return "register";
@@ -74,6 +85,11 @@ public class IndexController {
         return "redirect:/?refer=register";
     }
 
+    /*
+    *
+    * Login
+    *
+    * */
     @RequestMapping(value = "/index/login", method = RequestMethod.GET)
     public String login(){
         return "login";
@@ -96,12 +112,22 @@ public class IndexController {
         }
     }
 
+    /*
+    *
+    * Logout
+    *
+    * */
     @RequestMapping(value = "/index/logout", method = RequestMethod.GET)
     public String logout(HttpSession session){
         session.removeAttribute(UserSrv.SESSION_USER);
         return "redirect:/?refer=logout";
     }
 
+    /*
+    *
+    * User Info
+    *
+    * */
     @RequestMapping(value = "/index/self", method = RequestMethod.GET)
     public String selfInfo(@RequestParam(value = "refer",required = false) String message,HttpSession session, Model model) throws EntityNotFoundException {
         User user = (User) session.getAttribute(UserSrv.SESSION_USER);
@@ -145,6 +171,11 @@ public class IndexController {
         return "redirect:/index/self?refer=pDeleted";
     }
 
+    /*
+    *
+    * Post
+    *
+    * */
     @RequestMapping(value = "/index/article",method = RequestMethod.GET)
     public String recentArticles(@RequestParam(value = "page",defaultValue = "0") int page,@RequestParam(value = "refer",required = false) String message, Model model){
         model.addAttribute("pageObj",postContentSrv.findAll(new PageRequest(page,10, Sort.Direction.DESC,"createDate")));
@@ -186,6 +217,11 @@ public class IndexController {
         return "post";
     }
 
+    /*
+    *
+    * Comments
+    *
+    * */
     @RequestMapping(value = "/index/article/{article}/comments", method = RequestMethod.POST)
     public String postComment(@PathVariable("article") Long articleId, @ModelAttribute CommentModel comment, HttpSession session) throws EntityNotFoundException {
         User user = (User) session.getAttribute(UserSrv.SESSION_USER);
@@ -202,5 +238,15 @@ public class IndexController {
         forSave.setCreateDate(new Date());
         postContentSrv.saveComment(forSave);
         return "redirect:/index/article/"+articleId+"?refer=comment#comment_area";
+    }
+
+    @RequestMapping(value = "/index/article/{article}/comments", method = RequestMethod.GET)
+    public String postComment(
+            @PathVariable("article") Long articleId,
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            Model model) throws EntityNotFoundException {
+        model.addAttribute("page",postContentSrv.getArticleComments(
+                articleId,new PageRequest(page,10, Sort.Direction.DESC,"createDate")));
+        return "comment_list";
     }
 }
