@@ -8,6 +8,9 @@ import cn.lncsa.bbs.repository.UserGroupRepo;
 import cn.lncsa.bbs.repository.UserProfileItemRepo;
 import cn.lncsa.bbs.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -68,5 +71,9 @@ public class UserSrv {
 
     public void deleteProfileItem(UserProfileItem userProfileItem) {
         userProfileItemRepo.delete(userProfileItem);
+    }
+
+    public Page<User> findAll(Pageable pageable) {
+        return userRepo.findAll(pageable);
     }
 }

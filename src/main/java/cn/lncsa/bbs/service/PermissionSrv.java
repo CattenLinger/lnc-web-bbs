@@ -7,6 +7,9 @@ import cn.lncsa.bbs.repository.PermissionRepo;
 import cn.lncsa.bbs.repository.UserGroupRepo;
 import cn.lncsa.bbs.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +21,12 @@ import java.util.*;
 @Service
 public class PermissionSrv {
 
+    public final static String DEFAULT_USER_GROUP = "guest";
+
     private PermissionRepo permissionRepo;
     private UserGroupRepo userGroupRepo;
+
+    private UserGroup defaultUserGroup;
 
     @Autowired
     public void setPermissionRepo(PermissionRepo permissionRepo) {
@@ -73,5 +80,21 @@ public class PermissionSrv {
 
     public UserGroup findUserGroup(String name) {
         return userGroupRepo.findByName(name);
+    }
+
+    public UserGroup getDefaultUserGroup(){
+        if(defaultUserGroup == null){
+            defaultUserGroup = userGroupRepo.findByName(DEFAULT_USER_GROUP);
+            if(defaultUserGroup == null){
+                defaultUserGroup = new UserGroup();
+                defaultUserGroup.setName(DEFAULT_USER_GROUP);
+                userGroupRepo.save(defaultUserGroup);
+            }
+        }
+        return defaultUserGroup;
+    }
+
+    public Page<UserGroup> findAllUserGroup(Pageable pageable) {
+        return userGroupRepo.findAll(pageable);
     }
 }

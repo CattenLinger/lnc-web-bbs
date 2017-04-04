@@ -1,7 +1,7 @@
 <#global webroot=""/>
-<#global pkey_head_pic = "headPic",
-pkey_secret="secret",
-pkey_nickname="nickname"/>
+<#global pkey_head_pic = "head_pic", pkey_secret="secret", pkey_nickname="nickname"/>
+<#global def_head_pic = "/img/placeholder-300x300.png"/>
+
 <#macro body title>
 <!doctype html>
 <html>
@@ -18,11 +18,27 @@ pkey_nickname="nickname"/>
 </html>
 </#macro>
 
+<#macro warpper8>
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <#nested >
+    </div>
+</div>
+</#macro>
+
 <#macro cutString text length suffix>
     <#if (text?length > length)>
     ${text?html?replace("\n"," ")?substring(0,length - 1)}${suffix!""}
     <#else >
     ${text?html?replace("\n"," ")}
+    </#if>
+</#macro>
+
+<#macro listPostTags post>
+    <#if (post.topics?? && post.topics?size > 0)>
+        <#list post.topics as topic>
+        <label class="label label-primary">${topic}</label>
+        </#list>
     </#if>
 </#macro>
 
@@ -41,26 +57,26 @@ pkey_nickname="nickname"/>
 
         <#-- Middle page list -->
             <#if (total <= length)>
-                <@listPagerMiddle
+                <@_list_pager_middle
                 start=0
                 end=(total - 1)
                 current=current path=path/>
 
             <#elseif (total > length)>
                 <#if (current <= (length / 2)?floor)>
-                    <@listPagerMiddle
+                    <@_list_pager_middle
                     start=0
                     end=(length - 1)
                     current=current path=path/>
 
                 <#elseif ((current > (length / 2)?floor) && (current < (total - length / 2)?floor)) >
-                    <@listPagerMiddle
+                    <@_list_pager_middle
                     start=current + 1 - (length / 2)?ceiling
                     end=current + (length / 2)?floor
                     current=current path=path/>
 
                 <#elseif (current + (length / 2)?floor >= total - 1)>
-                    <@listPagerMiddle
+                    <@_list_pager_middle
                     start=(total-length)
                     end=(total - 1)
                     current=current path=path/>
@@ -80,19 +96,23 @@ pkey_nickname="nickname"/>
 </div>
 </#macro>
 
-<#macro listPagerMiddle start end current path>
+<#macro _list_pager_middle start end current path>
     <#list start..end as i>
     <li ${(i == current)?string('class="active"','')}><a href=${path + i}>${i + 1}</a></li>
     </#list>
 </#macro>
+
+
 
 <#macro _import_css>
 <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
 <!--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
 <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/animate.css/3.5.2/animate.css">
-<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css"/>
-<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.min.css"/>
+<link rel="stylesheet" type="text/css"
+      href="//cdn.bootcss.com/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css"/>
+<link rel="stylesheet" type="text/css"
+      href="//cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.min.css"/>
 <link href="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet">
 <#--<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap-material-design/4.0.2/bootstrap-material-design.css">-->
 <link rel="stylesheet" type="text/css" href="/css/bbs-main.css"/>

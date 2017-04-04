@@ -52,7 +52,7 @@ public class IndexController {
     * Index page
     *
     * */
-    @RequestMapping("/")
+    @GetMapping("/")
     public String index(@RequestParam(value = "refer", required = false)String refer, Model model){
         if(refer != null){
             model.addAttribute("message",refer);
@@ -66,12 +66,12 @@ public class IndexController {
     * Register
     *
     * */
-    @RequestMapping(value = "/index/register", method = RequestMethod.GET)
+    @GetMapping("/index/register")
     public String register() {
         return "register";
     }
 
-    @RequestMapping(value = "/index/register", method = RequestMethod.POST)
+    @PostMapping("/index/register")
     public String register(@ModelAttribute UserModel userModel, Model model){
         User user = userSrv.findByUsername(userModel.getUsername());
         if(user != null) {
@@ -80,7 +80,8 @@ public class IndexController {
         }else user = new User();
         user.setPassword(userModel.getPassword());
         user.setUsername(userModel.getUsername());
-
+        user.setRegisterDate(new Date());
+        user.setUserGroup(permissionSrv.getDefaultUserGroup());
         userSrv.save(user);
         return "redirect:/?refer=register";
     }
@@ -90,12 +91,12 @@ public class IndexController {
     * Login
     *
     * */
-    @RequestMapping(value = "/index/login", method = RequestMethod.GET)
+    @GetMapping("/index/login")
     public String login(){
         return "login";
     }
 
-    @RequestMapping(value = "/index/login",method = RequestMethod.POST)
+    @PostMapping("/index/login")
     public String login(@ModelAttribute UserModel userModel, HttpSession session, Model model){
         User user = userSrv.findByUsername(userModel.getUsername());
         if(user == null) {
@@ -117,7 +118,7 @@ public class IndexController {
     * Logout
     *
     * */
-    @RequestMapping(value = "/index/logout", method = RequestMethod.GET)
+    @GetMapping("/index/logout")
     public String logout(HttpSession session){
         session.removeAttribute(UserSrv.SESSION_USER);
         return "redirect:/?refer=logout";
@@ -128,7 +129,7 @@ public class IndexController {
     * User Info
     *
     * */
-    @RequestMapping(value = "/index/self", method = RequestMethod.GET)
+    @GetMapping("/index/self")
     public String selfInfo(@RequestParam(value = "refer",required = false) String message,HttpSession session, Model model) throws EntityNotFoundException {
         User user = (User) session.getAttribute(UserSrv.SESSION_USER);
         if(user == null) return "redirect:/index/login";
@@ -137,7 +138,7 @@ public class IndexController {
         return "self";
     }
 
-    @RequestMapping(value = "/index/self/profile",method = RequestMethod.POST)
+    @PostMapping("/index/self/profile")
     public String patchInfo(@ModelAttribute UserProfileItem userProfileItem, HttpSession session){
         User user = (User)session.getAttribute(UserSrv.SESSION_USER);
         if(user == null) return "redirect:/user/login";
@@ -156,7 +157,7 @@ public class IndexController {
         return "redirect:/index/self?refer=pSaved";
     }
 
-    @RequestMapping(value = "/index/self/profile/delete", method = RequestMethod.GET)
+    @GetMapping("/index/self/profile/delete")
     public String deleteInfo(@RequestParam("key") String key, HttpSession session){
         User user = (User)session.getAttribute(UserSrv.SESSION_USER);
         if(user == null) return "redirect:/user/login";
@@ -176,7 +177,7 @@ public class IndexController {
     * Post
     *
     * */
-    @RequestMapping(value = "/index/article",method = RequestMethod.GET)
+    @GetMapping("/index/article")
     public String recentArticles(@RequestParam(value = "page",defaultValue = "0") int page,@RequestParam(value = "refer",required = false) String message, Model model){
         model.addAttribute("pageObj",postContentSrv.findAll(new PageRequest(page,10, Sort.Direction.DESC,"createDate")));
         if(message != null) model.addAttribute("message",message);
@@ -184,7 +185,7 @@ public class IndexController {
         return "articles";
     }
 
-    @RequestMapping(value = "/index/article",method = RequestMethod.POST)
+    @PostMapping("/index/article")
     public String postArticle(@ModelAttribute PostContent postContent, HttpSession session) throws EntityNotFoundException, ForbiddenException {
         User user = (User)session.getAttribute(UserSrv.SESSION_USER);
         if(user == null) return "redirect:/user/login";
@@ -205,12 +206,12 @@ public class IndexController {
         return "redirect:/index/article?refer=edit";
     }
 
-    @RequestMapping(value = "/index/article/post",method = RequestMethod.GET)
+    @GetMapping("/index/article/post")
     public String postArticle(){
         return "post_article";
     }
 
-    @RequestMapping(value = "/index/article/{id}")
+    @GetMapping("/index/article/{id}")
     public String showArticle(@PathVariable("id") Long articleId, Model model) throws EntityNotFoundException {
         PostContent postContent = postContentSrv.get(articleId);
         model.addAttribute("post",new PostContentModel(postContent));
@@ -222,7 +223,7 @@ public class IndexController {
     * Comments
     *
     * */
-    @RequestMapping(value = "/index/article/{article}/comments", method = RequestMethod.POST)
+    @PostMapping("/index/article/{article}/comments")
     public String postComment(@PathVariable("article") Long articleId, @ModelAttribute CommentModel comment, HttpSession session) throws EntityNotFoundException {
         User user = (User) session.getAttribute(UserSrv.SESSION_USER);
         if(user == null) return "redirect:/user/login";
@@ -240,7 +241,7 @@ public class IndexController {
         return "redirect:/index/article/"+articleId+"?refer=comment#comment_area";
     }
 
-    @RequestMapping(value = "/index/article/{article}/comments", method = RequestMethod.GET)
+    @GetMapping("/index/article/{article}/comments")
     public String postComment(
             @PathVariable("article") Long articleId,
             @RequestParam(value = "page",defaultValue = "0") int page,
@@ -248,5 +249,35 @@ public class IndexController {
         model.addAttribute("page",postContentSrv.getArticleComments(
                 articleId,new PageRequest(page,10, Sort.Direction.DESC,"createDate")));
         return "comment_list";
+    }
+
+    /*
+    *
+    * User permission management
+    *
+    * */
+
+    @GetMapping("/index/manage/users")
+    public String listUsers(@RequestParam(value = "page", defaultValue = "0",required = false) int page, Model model){
+        model.addAttribute("page",userSrv.findAll(new PageRequest(page,20)));
+        return "user_list";
+    }
+
+    @GetMapping("/index/manage/user/{username}")
+    public String userDetails(@PathVariable("username") String username, Model model) throws EntityNotFoundException {
+        model.addAttribute("user",userSrv.getByUsername(username));
+        return "user_details";
+    }
+
+    @GetMapping("/index/manage/groups")
+    public String listGroups(@RequestParam(value = "page", defaultValue = "0", required = false) int page, Model model){
+        model.addAttribute("page",permissionSrv.findAllUserGroup(new PageRequest(page,20)));
+        return "user_group_list";
+    }
+
+    @GetMapping("/index/manage/groups/{name}")
+    public String groupDetails(@PathVariable("name") String groupName, Model model) throws EntityNotFoundException {
+        model.addAttribute("group",permissionSrv.getUserGroupByName(groupName));
+        return "user_group_details";
     }
 }

@@ -17,7 +17,12 @@ public class CommentModel {
     private String authorName;
     private Long target;
     private Long relateTo;
+
     private Comment comment;
+
+    public CommentModel(){
+
+    }
 
     public CommentModel(Long id) {
         this.id = id;

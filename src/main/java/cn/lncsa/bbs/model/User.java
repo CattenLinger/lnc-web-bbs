@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private Date registerDate;
     private Set<UserProfileItem> profile;
     private UserGroup userGroup;
 
@@ -68,5 +70,14 @@ public class User {
 
     public void setUserGroup(UserGroup userGroup) {
         this.userGroup = userGroup;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
     }
 }

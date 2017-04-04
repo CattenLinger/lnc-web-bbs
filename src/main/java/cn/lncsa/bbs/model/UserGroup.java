@@ -14,6 +14,7 @@ import java.util.Set;
 public class UserGroup {
     private Long id;
     private String name;
+    private String description;
     private Set<Permission> permissions;
 
     @Id
@@ -46,5 +47,13 @@ public class UserGroup {
 
     public void replace(UserGroup userGroup) {
         this.setName(userGroup.getName() == null ? this.getName() : userGroup.getName());
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

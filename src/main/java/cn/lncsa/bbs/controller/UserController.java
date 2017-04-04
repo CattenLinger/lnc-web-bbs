@@ -6,6 +6,7 @@ import cn.lncsa.bbs.exception.EntityNotFoundException;
 import cn.lncsa.bbs.facade.RexModel;
 import cn.lncsa.bbs.facade.UserModel;
 import cn.lncsa.bbs.model.User;
+import cn.lncsa.bbs.service.PermissionSrv;
 import cn.lncsa.bbs.service.UserSrv;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  * Created by catten on 3/29/17.
@@ -23,10 +25,16 @@ import javax.servlet.http.HttpSession;
 public class UserController {
 
     private UserSrv userSrv;
+    private PermissionSrv permissionSrv;
 
     @Autowired
     public void setUserSrv(UserSrv userSrv) {
         this.userSrv = userSrv;
+    }
+
+    @Autowired
+    public void setPermissionSrv(PermissionSrv permissionSrv) {
+        this.permissionSrv = permissionSrv;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -42,6 +50,8 @@ public class UserController {
                 && submitUser.getPassword().length() >= 6) {
             User user = userSrv.findByUsername(submitUser.getUsername());
             if (user != null) throw new DuplicateEntityException("User already exist.");
+            submitUser.setUserGroup(permissionSrv.getDefaultUserGroup());
+            submitUser.setRegisterDate(new Date());
             userSrv.save(submitUser);
             return ResponseEntity.ok(new RexModel().setMessage(MessageStrings.SUCCESS));
         }

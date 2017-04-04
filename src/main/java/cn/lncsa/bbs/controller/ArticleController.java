@@ -2,6 +2,7 @@ package cn.lncsa.bbs.controller;
 
 import cn.lncsa.bbs.commons.MessageStrings;
 import cn.lncsa.bbs.exception.EntityNotFoundException;
+import cn.lncsa.bbs.facade.CommentModel;
 import cn.lncsa.bbs.facade.RexModel;
 import cn.lncsa.bbs.model.Comment;
 import cn.lncsa.bbs.model.PostContent;
@@ -94,17 +95,23 @@ public class ArticleController {
     public
     @ResponseBody
     ResponseEntity commitArticle(
-            @PathVariable("id") Long articleId, @RequestBody RexModel<Comment> rexModel, HttpSession session) throws EntityNotFoundException {
+            @PathVariable("id") Long articleId, @RequestBody RexModel<CommentModel> rexModel, HttpSession session) throws EntityNotFoundException {
         PostContent postContent = postContentSrv.get(articleId);
         Object sessionUser = session.getAttribute(UserSrv.SESSION_USER);
         if (sessionUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        Comment submitComment = rexModel.getData();
+        CommentModel submitComment = rexModel.getData();
 
-        submitComment.setAuthor((User) sessionUser);
-        submitComment.setCreateDate(new Date());
-        submitComment.setTarget(postContent);
+        Comment comment = new Comment();
 
-        postContentSrv.saveComment(submitComment);
+        if(submitComment.getRelateTo() != null){
+            comment.setRelateTo(postContentSrv.getComment(submitComment.getRelateTo()));
+        }
+        comment.setAuthor((User) sessionUser);
+        comment.setCreateDate(new Date());
+        comment.setTarget(postContent);
+        comment.setContent(submitComment.getContent());
+
+        postContentSrv.saveComment(comment);
         return ResponseEntity.ok(new RexModel<>().setMessage(MessageStrings.SUCCESS));
     }
 
@@ -123,7 +130,7 @@ public class ArticleController {
         Object sessionUser = session.getAttribute(UserSrv.SESSION_USER);
         if (sessionUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         Comment comment = postContentSrv.getComment(id);
-        if (!((User) sessionUser).getId().equals(comment.getAuthor().getId()))
+        if (((User) sessionUser).getId().equals(comment.getAuthor().getId()))
             postContentSrv.deleteComment(postContentSrv.getComment(id));
         else return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         return ResponseEntity.ok(new RexModel<>().setMessage(MessageStrings.SUCCESS));

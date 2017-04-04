@@ -5,10 +5,7 @@ import cn.lncsa.bbs.model.UserProfileItem;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by catten on 3/29/17.
@@ -19,6 +16,7 @@ public class UserModel {
     private String username;
     private String password;
     private String groupName;
+    private Date registerDate;
     private Map<String,String> information;
     private User user;
 
@@ -44,6 +42,7 @@ public class UserModel {
                 }
             }
         }
+        registerDate = user.getRegisterDate();
         this.user = user;
     }
 
@@ -94,5 +93,13 @@ public class UserModel {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Date getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
     }
 }

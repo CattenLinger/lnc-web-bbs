@@ -4,10 +4,10 @@
     data-page-total="${page.totalPages}" data-page-size="${page.size}">
 <#if (page.content?? && page.content?size > 0)>
     <#list page.content as item>
-        <#assign headPic = ""/>
+        <#assign headPic = def_head_pic/>
         <#assign nickname = ""/>
         <#-- Read single comment profile -->
-        <#if (item.author.profile??)>
+        <#if item.author.profile??>
             <#list item.author.profile as proItem>
                 <#switch proItem.key>
                     <#case pkey_head_pic>
@@ -20,28 +20,35 @@
             </#list>
         </#if>
         <#if nickname == ""><#assign nickname=item.author.username/></#if>
-        <li class="list-group-item">
+
+        <li class="list-group-item" data-comment-id="${item.id}">
             <div class="media">
             <#-- Head pic -->
                 <div class="media-left">
-                    <#if headPicKey?? && headPic != "">
-                        <img src="${headPic}" width="32" height="32">
-                    <#else >
-                        <img src="/img/placeholder-300x300.png" width="32" height="32">
-                    </#if>
+                    <img src="${headPic}" width="32" height="32">
                 </div>
                 <div class="media-body">
-                    <div><b>${nickname}</b></div>
-                    <div data-type="markdown-content">${item.content}</div>
                     <div>
                         <div class="pull-left">
-                            <small>create at ${item.createDate?string('yyyy-MM-dd hh:mm:ss')}</small>
+                            <div><b>${nickname}</b></div>
+                            <div><small>create at ${item.createDate?string('yyyy-MM-dd hh:mm:ss')}</small></div>
                         </div>
-                        <div class="pull-right">
-                            <button class="btn btn-success">Reply</button>
-                            <button class="btn btn-delete">Delete</button>
+                        <div class="btn-group btn-group-sm pull-right">
+                            <button class="btn btn-primary" data-role="c_reply">
+                                <span class="glyphicon glyphicon-share-alt"></span> Reply</button>
+                            <#if Session.session_user??>
+                                <#if Session.session_user.id == item.author.id>
+                                    <button class="btn btn-warning" data-role="c_delete">
+                                        <span class="glyphicon glyphicon-trash"></span> Delete</button>
+                                </#if>
+                            </#if>
                         </div>
+                        <div class="clearfix"></div>
                     </div>
+                    <#if item.relateTo??>
+                        <p>reply to @${item.relateTo.author.username} : </p>
+                    </#if>
+                    <p class="lnc-md-content" data-role="markdown-content">${item.content!""}</p>
                 </div>
             </div>
         </li>
