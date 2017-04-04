@@ -119,7 +119,7 @@ public class ArticleController {
     @RequestMapping(value = "/comments/{id}", method = RequestMethod.DELETE)
     public
     @ResponseBody
-    ResponseEntity removeCommit(@PathVariable("id") Long id, HttpSession session) throws EntityNotFoundException {
+    ResponseEntity removeComment(@PathVariable("id") Long id, HttpSession session) throws EntityNotFoundException {
         Object sessionUser = session.getAttribute(UserSrv.SESSION_USER);
         if (sessionUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         Comment comment = postContentSrv.getComment(id);
