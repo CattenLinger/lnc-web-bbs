@@ -1,4 +1,5 @@
 <#global webroot=""/>
+<#global websiteTitle="Lingnan College Software Association BBS" , websiteSubtitle="A simple bbs website" />
 <#global pkey_head_pic = "head_pic", pkey_secret="secret", pkey_nickname="nickname"/>
 <#global def_head_pic = "/img/placeholder-300x300.png"/>
 
@@ -12,7 +13,13 @@
 </head>
 
 <body>
+<div class="container">
+    <div class="page-header">
+        <h1>${websiteTitle}</h1>
+        <p>${websiteSubtitle}</p>
+    </div>
     <#nested >
+</div>
 <@_import_js></@_import_js>
 </body>
 </html>

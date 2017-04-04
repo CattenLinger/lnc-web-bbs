@@ -2,14 +2,11 @@ package cn.lncsa.bbs.service;
 
 import cn.lncsa.bbs.exception.EntityNotFoundException;
 import cn.lncsa.bbs.model.User;
-import cn.lncsa.bbs.model.UserGroup;
 import cn.lncsa.bbs.model.UserProfileItem;
-import cn.lncsa.bbs.repository.UserGroupRepo;
 import cn.lncsa.bbs.repository.UserProfileItemRepo;
 import cn.lncsa.bbs.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -75,5 +72,15 @@ public class UserSrv {
 
     public Page<User> findAll(Pageable pageable) {
         return userRepo.findAll(pageable);
+    }
+
+    public String findUserProfileValue(Long userId, String key){
+        return userProfileItemRepo.findUserProfileValue(userId,key);
+    }
+
+    public String getUserProfileValue(Long userId, String key) throws EntityNotFoundException {
+        String value = findUserProfileValue(userId,key);
+        if(value == null) throw new EntityNotFoundException("No such value");
+        return value;
     }
 }

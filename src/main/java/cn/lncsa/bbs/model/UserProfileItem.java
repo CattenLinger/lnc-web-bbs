@@ -15,6 +15,7 @@ public class UserProfileItem {
 
     public final static String KEY_SECRET = "secret";
     public final static String KEY_NAME = "nickname";
+    public final static String KEY_HEAD_PIC = "head_pic";
 
     private Long id;
     private String key;

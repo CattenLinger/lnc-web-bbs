@@ -31,6 +31,7 @@
                                     <p>${post.subtitle!""}</p>
                                     <small>create at ${post.createDate?string('yyyy-MM-dd hh:mm:ss')}</small>
                                     <small>latest modified at ${post.modifiedDate?string('yyyy-MM-dd hh:mm:ss')}</small>
+                                    <div><@temp.listPostTags post=post/></div>
                                 </div>
                             </div>
                         </a>

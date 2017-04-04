@@ -6,6 +6,7 @@ import cn.lncsa.bbs.exception.EntityNotFoundException;
 import cn.lncsa.bbs.facade.RexModel;
 import cn.lncsa.bbs.facade.UserModel;
 import cn.lncsa.bbs.model.User;
+import cn.lncsa.bbs.model.UserProfileItem;
 import cn.lncsa.bbs.service.PermissionSrv;
 import cn.lncsa.bbs.service.UserSrv;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,7 +38,7 @@ public class UserController {
         this.permissionSrv = permissionSrv;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @PostMapping("/register")
     public
     @ResponseBody
     ResponseEntity register(@RequestBody RexModel<UserModel> rexModel) throws DuplicateEntityException {
@@ -58,21 +59,21 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }
 
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+    @GetMapping("/id/{id}")
     public
     @ResponseBody
     RexModel getUserInfo(@PathVariable("id") Long userId) throws EntityNotFoundException {
         return new RexModel<>(new UserModel(userSrv.get(userId)));
     }
 
-    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    @GetMapping("/{username}")
     public
     @ResponseBody
     RexModel getUserInfo(@PathVariable("username") String username) throws EntityNotFoundException {
         return new RexModel<>(new UserModel(userSrv.getByUsername(username)));
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping("/login")
     public
     @ResponseBody
     ResponseEntity login(@RequestBody RexModel<UserModel> rexModel, HttpSession session) throws EntityNotFoundException {
@@ -90,10 +91,8 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/exist", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    ResponseEntity isUsernameLegalAndNotExist(@RequestParam("username") String username) throws JsonProcessingException {
+    @GetMapping("/exist")
+    public @ResponseBody ResponseEntity isUsernameLegalAndNotExist(@RequestParam("username") String username) throws JsonProcessingException {
         if (username.matches("^[A-Za-z0-9_\\-@.,]{4,}$")) {
             User user = userSrv.findByUsername(username);
             if (user == null)
@@ -105,5 +104,17 @@ public class UserController {
                             .setError(MessageStrings.VALIDATE_USERNAME_INVALID)
                             .setMessage(MessageStrings.NOT_MATCH_PATTERN));
         }
+    }
+
+    @GetMapping("/{id}/head_pic")
+    public
+    @ResponseBody
+    ResponseEntity getUserHeadPic(@PathVariable("id") Long userId) throws EntityNotFoundException {
+        return ResponseEntity.ok(new RexModel<>(userSrv.findUserProfileValue(userId,UserProfileItem.KEY_HEAD_PIC)));
+    }
+
+    @GetMapping("/{id}/nickname")
+    public @ResponseBody ResponseEntity getUserNickname(@PathVariable("id") Long userId) throws EntityNotFoundException {
+        return ResponseEntity.ok(new RexModel<>(userSrv.getUserProfileValue(userId,UserProfileItem.KEY_NAME)));
     }
 }

@@ -93,7 +93,7 @@
                 $(formView.btnSubmit).addClass("disabled");
                 console.debug($(formView.form).serializeJSON());
                 $.post(
-                        "/article/${post.id}/comments",
+                        "/article/${post.id}/comments.html",
                         $(formView.form).serializeJSON(),
                         function (content, status, xhr) {
                             switch (status){
@@ -116,7 +116,7 @@
     });
 
     function loadComments(formView,page) {
-        $(formView.list).load("/index/article/${post.id}/comments?page=" + page, function (content, status, xhr) {
+        $(formView.list).load("/index/article/${post.id}/comments.html?page=" + page, function (content, status, xhr) {
             switch (status) {
                 case "success":
                     $(formView.list).find("[data-comment-id]").each(function (i, obj) {

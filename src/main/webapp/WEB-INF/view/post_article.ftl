@@ -1,6 +1,6 @@
 <#import "template/main.ftl" as temp>
 <@temp.body title="Post article">
-    <@temp.warpper8 >
+<div class="container">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h2>Editing Post</h2>
@@ -32,7 +32,7 @@
             </form>
         </div>
     </div>
-    </@temp.warpper8>
+</div>
 </@temp.body>
 <script>
     $(document).ready(function () {

@@ -31,11 +31,11 @@ public class UserModel {
         Set<UserProfileItem> userProfile = user.getProfile();
         if(userProfile != null && userProfile.size() > 0){
             information = new HashMap<>();
+            boolean secret = false;
             for (UserProfileItem userProfileItem : userProfile){
                 if(userProfileItem.getKey().equals(UserProfileItem.KEY_SECRET)){
                     if(userProfileItem.getValue().equals(Boolean.TRUE.toString())){
-                        information = null;
-                        break;
+                        secret = true;
                     }else {
                         information.put(userProfileItem.getKey(), userProfileItem.getValue());
                     }
@@ -62,6 +62,7 @@ public class UserModel {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

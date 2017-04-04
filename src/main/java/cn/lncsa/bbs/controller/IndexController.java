@@ -185,6 +185,12 @@ public class IndexController {
         return "articles";
     }
 
+    @GetMapping("/index/articles.html")
+    public String articleList(@RequestParam(value = "page", defaultValue = "0") int page, Model model){
+        model.addAttribute("pageObj",postContentSrv.findAll(new PageRequest(page,10, Sort.Direction.DESC,"createDate")));
+        return "article_list";
+    }
+
     @PostMapping("/index/article")
     public String postArticle(@ModelAttribute PostContent postContent, HttpSession session) throws EntityNotFoundException, ForbiddenException {
         User user = (User)session.getAttribute(UserSrv.SESSION_USER);
@@ -241,7 +247,7 @@ public class IndexController {
         return "redirect:/index/article/"+articleId+"?refer=comment#comment_area";
     }
 
-    @GetMapping("/index/article/{article}/comments")
+    @GetMapping("/index/article/{article}/comments.html")
     public String postComment(
             @PathVariable("article") Long articleId,
             @RequestParam(value = "page",defaultValue = "0") int page,
