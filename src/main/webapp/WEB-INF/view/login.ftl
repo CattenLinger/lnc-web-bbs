@@ -1,6 +1,6 @@
 <#import "template/main.ftl" as temp>
 <@temp.body title="Sign in">
-    <@temp.warpper8>
+    <@temp.centerWarpper width=6>
         <#if error??>
             <#if error == "user_not_exist">
             <div class="alert alert-warning">User doesn't exist</div>
@@ -38,5 +38,5 @@
             </form>
         </div>
     </div>
-    </@temp.warpper8>
+    </@temp.centerWarpper>
 </@temp.body>

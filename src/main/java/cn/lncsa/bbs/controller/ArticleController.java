@@ -118,7 +118,7 @@ public class ArticleController {
     @RequestMapping(value = "/{id}/comments", method = RequestMethod.GET)
     public
     @ResponseBody
-    ResponseEntity getCommit(
+    ResponseEntity getComment(
             @PathVariable("id") Long articleId, @PageableDefault Pageable pageable) throws EntityNotFoundException {
         return ResponseEntity.ok(new RexModel<>(postContentSrv.getArticleComments(articleId, pageable)));
     }

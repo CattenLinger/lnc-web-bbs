@@ -20,7 +20,7 @@
     </div>
     <#nested >
 </div>
-<@_import_js></@_import_js>
+    <@_import_js></@_import_js>
 </body>
 </html>
 </#macro>
@@ -28,6 +28,14 @@
 <#macro warpper8>
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
+        <#nested >
+    </div>
+</div>
+</#macro>
+
+<#macro centerWarpper width>
+<div class="row">
+    <div class="col-sm-${width} col-sm-offset-${((12 - width) / 2)?floor}">
         <#nested >
     </div>
 </div>
@@ -142,6 +150,7 @@
 <script src="//cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>
 <script src="//cdn.bootcss.com/bootstrap-markdown/2.10.0/js/bootstrap-markdown.js"></script>
 <script src="//cdn.bootcss.com/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script src="//cdn.bootcss.com/twbs-pagination/1.4.0/jquery.twbsPagination.min.js"></script>
 <script src="//cdn.bootcss.com/showdown/1.6.4/showdown.min.js"></script>
 <script src="/js/bbs-main.js"></script>
 </#macro>

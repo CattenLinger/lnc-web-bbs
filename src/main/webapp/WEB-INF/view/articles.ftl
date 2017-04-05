@@ -1,7 +1,7 @@
 <#import "template/main.ftl" as temp>
 <@temp.body title="Articles">
 <div class="row">
-    <div class="col-sm-12 col-sm-offset-0 col-md-8 col-md-offset-2">
+    <div class="col-sm-8">
         <#if message?? >
             <#if message == "edit">
                 <div class="alert alert-success">Posting success!</div>

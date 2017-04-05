@@ -179,15 +179,18 @@ public class IndexController {
     * */
     @GetMapping("/index/article")
     public String recentArticles(@RequestParam(value = "page",defaultValue = "0") int page,@RequestParam(value = "refer",required = false) String message, Model model){
-        model.addAttribute("pageObj",postContentSrv.findAll(new PageRequest(page,10, Sort.Direction.DESC,"createDate")));
+        model.addAttribute("pageObj",postContentSrv.findAll(new PageRequest(page,6, Sort.Direction.DESC,"createDate")));
         if(message != null) model.addAttribute("message",message);
         model.addAttribute("rend_type","recent");
         return "articles";
     }
 
     @GetMapping("/index/articles.html")
-    public String articleList(@RequestParam(value = "page", defaultValue = "0") int page, Model model){
-        model.addAttribute("pageObj",postContentSrv.findAll(new PageRequest(page,10, Sort.Direction.DESC,"createDate")));
+    public String articleList(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
+            Model model){
+        model.addAttribute("pageObj",postContentSrv.findAll(new PageRequest(page,6, Sort.Direction.DESC,"createDate")));
         return "article_list";
     }
 

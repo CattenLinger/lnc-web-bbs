@@ -1,7 +1,6 @@
 <#import "template/main.ftl" as temp>
 <@temp.body title="Self">
-    <@temp.warpper8>
-
+    <@temp.centerWarpper width=8>
         <#if message??>
             <#switch message>
                 <#case "pSaved">
@@ -108,7 +107,7 @@
             </div>
         </div>
     </div>
-    </@temp.warpper8>
+    </@temp.centerWarpper>
 </@temp.body>
 <script>
     $(document).ready(function () {
