@@ -45,6 +45,7 @@
     - [Font Awesome](http://fontawesome.io/)
     - [Marked](https://github.com/chjj/marked)
     - [AngularJS ui-router (nested routes)](https://www.codeproject.com/articles/842880/angularjs-ui-router-nested-routes)
+    - [创建一个自定义 jQuery 插件](https://www.ibm.com/developerworks/cn/web/wa-jqplugin/)
 - 后端
     - Spring Data 与 Hibernate 相关
         - [Spring 4 MVC REST Controller Example (JSON CRUD Tutorial)](http://viralpatel.net/blogs/spring-4-mvc-rest-example-json/)

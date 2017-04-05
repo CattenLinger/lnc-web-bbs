@@ -1,5 +1,5 @@
 <#import "template/main.ftl" as temp>
-<div class="list-group" data-role="article_list" data-page="${pageObj.number + 1}" data-page-total="${pageObj.totalPages}" data-page-size="${pageObj.size}">
+<div class="list-group fadeIn animated" data-role="pager_list" data-page="${pageObj.number + 1}" data-page-total="${pageObj.totalPages}" data-page-size="${pageObj.size}">
 <#if (pageObj?? && pageObj.content?size > 0)>
     <#list pageObj.content as post>
         <a href="/index/article/${post.id}" class="list-group-item" data-author="${post.author.id}">

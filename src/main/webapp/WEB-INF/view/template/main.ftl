@@ -25,6 +25,46 @@
 </html>
 </#macro>
 
+<#macro userCard>
+    <#if Session.session_user??>
+    <div class="media" id="m_user_card" data-user-id="${Session.session_user.id}" data-toggle="userCard">
+        <div class="media-left">
+            <img data-role="m_user_head_pic" width="48" height="48" src="${def_head_pic}">
+        </div>
+        <div class="media-body">
+            <div><b data-role="m_user_nickname">...</b><br>
+                <small data-role="m_username">...</small>
+            </div>
+            <div>User group : <label class="label label-info" data-role="m_user_group">...</label></div>
+        </div>
+    </div>
+    <#else >
+    <b>Welcome, guest</b>
+    </#if>
+</#macro>
+
+<#macro shortcutItems>
+<div class="list-group">
+    <#if Session.session_user??>
+        <a class="list-group-item" href="/index/self">Self info</a>
+        <a class="list-group-item" href="/index/article/post">Post article</a>
+        <a class="list-group-item" href="/index/manage/users">Users</a>
+        <a class="list-group-item" href="/index/manage/groups">User Groups</a>
+    <#else >
+        <a class="list-group-item" href="/index/login">Sign in</a>
+        <a class="list-group-item" href="/index/register">Sign up</a>
+    </#if>
+</div>
+</#macro>
+
+<#macro managerPageShortcuts>
+<div class="list-group">
+    <a class="list-group-item" href="/index/manage/users">Users</a>
+    <a class="list-group-item" href="/index/manage/groups">User Groups</a>
+    <a class="list-group-item" href="/">Back to index</a>
+</div>
+</#macro>
+
 <#macro warpper8>
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2">

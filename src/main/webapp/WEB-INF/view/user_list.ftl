@@ -1,10 +1,7 @@
 <#import "template/main.ftl" as temp>
 <@temp.body title="Users">
-    <@temp.warpper8>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3>Users</h3>
-        </div>
+<div class="row">
+    <div class="col-md-8">
         <div class="list-group">
             <#if (page.content?? && page.content?size > 0)>
                 <#list page.content as user>
@@ -41,5 +38,13 @@
             </#if>
         </div>
     </div>
-    </@temp.warpper8>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Shortcuts</b>
+            </div>
+            <@temp.managerPageShortcuts/>
+        </div>
+    </div>
+</div>
 </@temp.body>

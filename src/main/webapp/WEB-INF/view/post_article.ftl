@@ -3,7 +3,11 @@
 <div class="container">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h2>Editing Post</h2>
+            <h2 class="pull-left">Editing Post</h2>
+            <div class="pull-right">
+                <a href="/" class="btn btn-default">Back</a>
+            </div>
+            <div class="clearfix"></div>
         </div>
         <div class="panel-body">
             <form method="post" data-toggle="validator" action="/index/article">
@@ -26,7 +30,6 @@
                 <div class="form-group">
                     <div class="col-sm-8 col-sm-offset-2">
                         <button type="submit" class="btn btn-success btn-block"> Post</button>
-                        <a href="/" class="btn btn-default btn-block">Back</a>
                     </div>
                 </div>
             </form>
