@@ -11,7 +11,7 @@
             </div>
             <div><@temp.listPostTags post = post/></div>
         </div>
-        <div class="pull-right"><a class="btn btn-primary" href="/index/article">Back</a></div>
+        <div class="pull-right"><a class="btn btn-primary" href="/index">Back</a></div>
         <div class="clearfix"></div>
     </div>
     <section id="post_body"></section>

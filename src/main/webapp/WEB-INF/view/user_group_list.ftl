@@ -5,7 +5,7 @@
         <div class="list-group">
             <#if (page.content ?? && page.content?size > 0)>
                 <#list page.content as group>
-                    <a href="/index/manage/groups/${group.name}" class="list-group-item">
+                    <a href="/index/manage/groups/${group.id}" class="list-group-item">
                         <div>
                             <b>${group.name}</b>
                             <p><#if group.description??>${group.description}<#else >No descriptions...</#if></p>
@@ -47,7 +47,7 @@
                     <div class="alert alert-danger hidden">Failed, maybe you have no permission.</div>
                     <div class="form-group">
                         <label for="gf_name" class="control-label">Group Name</label>
-                        <input id="gf_name" name="data[name]" type="text" maxlength="20" required class="form-control" pattern="[A-Za-z0-9]{3,20}">
+                        <input id="gf_name" name="data[name]" type="text" maxlength="20" required class="form-control" pattern="[A-Za-z0-9_-]{3,20}">
                     </div>
                     <div class="form-group">
                         <label for="gf_description">Description</label>

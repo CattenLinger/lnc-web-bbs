@@ -58,9 +58,9 @@ public class ManagerController {
     @RequestMapping(value = "/group", method = RequestMethod.PATCH)
     public
     @ResponseBody
-    ResponseEntity saveUserGroup(@RequestBody RexModel<UserGroup> rexModel) {
+    ResponseEntity saveUserGroup(@RequestBody RexModel<UserGroup> rexModel) throws EntityNotFoundException {
         UserGroup userGroup = rexModel.getData();
-        UserGroup origin = permissionSrv.findUserGroup(userGroup.getName());
+        UserGroup origin = userGroup.getId() != null ? permissionSrv.getUserGroup(userGroup.getId()) : permissionSrv.findUserGroup(userGroup.getName());
         if (origin != null) origin.replace(userGroup);
         else origin = userGroup;
         permissionSrv.saveUserGroup(origin);

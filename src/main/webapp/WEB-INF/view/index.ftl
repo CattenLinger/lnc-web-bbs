@@ -30,6 +30,8 @@
         var recentPostPager = $("#recent_post_pager");
 
         $("#m_user_card").userCard();
-        loadPostList(recentPostList, 0, recentPostPager);
+        loadListPage(recentPostList, 0, recentPostPager, "/index/articles.html?page=",function (listNode) {
+            rendPostList(listNode);
+        });
     });
 </script>

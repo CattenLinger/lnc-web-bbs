@@ -2,18 +2,20 @@
  * Created by catten on 3/29/17.
  */
 
-function loadPostList(listNode, page, pager) {
+function loadListPage(listNode, page, pager, pageHref, callback) {
     $(pager).addClass("disabled");
     $(listNode).html('<div class="summary-thumbnail spin"></div>');
-    $(listNode).load("/index/articles.html?page=" + page, function (content, status, xhr) {
+    $(listNode).load(pageHref + page, function (content, status, xhr) {
         if (status == "success") {
-            rendPostList(listNode);
-            updatePager(listNode,pager);
+            if(callback != undefined) callback(listNode);
+            updatePager(listNode,pager,function (event, page) {
+                loadListPage(listNode,page - 1,pager, pageHref, callback);
+            });
         }
     });
 }
 
-function updatePager(listNode,pager) {
+function updatePager(listNode,pager, callback) {
     var $pageNode = $($(listNode).find("[data-role='pager_list']").first());
     var currentPage = $pageNode.data("page");
     console.debug(currentPage);
@@ -23,9 +25,7 @@ function updatePager(listNode,pager) {
         visiblePages: 10,
         startPage: currentPage,
         hideOnlyOnePage: true
-    }).on("page",function (event, page) {
-        loadPostList(listNode,page - 1,pager);
-    });
+    }).on("page",callback);
     $(pager).removeClass("disabled");
 }
 

@@ -97,4 +97,20 @@ public class PermissionSrv {
     public Page<UserGroup> findAllUserGroup(Pageable pageable) {
         return userGroupRepo.findAll(pageable);
     }
+
+    public UserGroup getUserGroup(Long id) throws EntityNotFoundException {
+        UserGroup userGroup = userGroupRepo.findOne(id);
+        if(userGroup == null) throw new EntityNotFoundException("No user group match the id given");
+        return userGroup;
+    }
+
+    public Permission getOne(Long id) throws EntityNotFoundException {
+        Permission permission = permissionRepo.findOne(id);
+        if(permission == null) throw new EntityNotFoundException("Permission item not found");
+        return permission;
+    }
+
+    public void deletePermission(Long id) {
+        permissionRepo.delete(id);
+    }
 }

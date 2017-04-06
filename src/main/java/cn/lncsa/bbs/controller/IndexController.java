@@ -4,23 +4,24 @@ import cn.lncsa.bbs.exception.EntityNotFoundException;
 import cn.lncsa.bbs.exception.ForbiddenException;
 import cn.lncsa.bbs.facade.CommentModel;
 import cn.lncsa.bbs.facade.PostContentModel;
+import cn.lncsa.bbs.facade.RexModel;
 import cn.lncsa.bbs.facade.UserModel;
-import cn.lncsa.bbs.model.Comment;
-import cn.lncsa.bbs.model.PostContent;
-import cn.lncsa.bbs.model.User;
-import cn.lncsa.bbs.model.UserProfileItem;
+import cn.lncsa.bbs.model.*;
 import cn.lncsa.bbs.service.PermissionSrv;
 import cn.lncsa.bbs.service.PostContentSrv;
 import cn.lncsa.bbs.service.UserSrv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by catten on 3/29/17.
@@ -53,6 +54,11 @@ public class IndexController {
     *
     * */
     @GetMapping("/")
+    public String index(){
+        return "redirect:/index";
+    }
+
+    @GetMapping("/index")
     public String index(@RequestParam(value = "refer", required = false)String refer, Model model){
         if(refer != null){
             model.addAttribute("message",refer);
@@ -262,14 +268,19 @@ public class IndexController {
 
     /*
     *
-    * User permission management
+    * User & permission management
     *
     * */
 
-    @GetMapping("/index/manage/users")
+    @GetMapping("/index/manage/user_list.html")
     public String listUsers(@RequestParam(value = "page", defaultValue = "0",required = false) int page, Model model){
-        model.addAttribute("page",userSrv.findAll(new PageRequest(page,20)));
+        model.addAttribute("page",userSrv.findAll(new PageRequest(page,10)));
         return "user_list";
+    }
+
+    @GetMapping("/index/manage/users")
+    public String listUsers(){
+        return "users";
     }
 
     @GetMapping("/index/manage/user/{username}")
@@ -284,9 +295,39 @@ public class IndexController {
         return "user_group_list";
     }
 
-    @GetMapping("/index/manage/groups/{name}")
-    public String groupDetails(@PathVariable("name") String groupName, Model model) throws EntityNotFoundException {
-        model.addAttribute("group",permissionSrv.getUserGroupByName(groupName));
+    @PostMapping("/index/manage/groups/{id}")
+    public String alterGroup(@PathVariable("id") Long groupId,@ModelAttribute UserGroup submitObj, Model model) throws EntityNotFoundException {
+        UserGroup userGroup = permissionSrv.getUserGroup(groupId);
+        userGroup.replace(submitObj);
+        permissionSrv.saveUserGroup(userGroup);
+        return "redirect:/index/manage/groups/" + groupId;
+    }
+
+    @GetMapping("/index/manage/groups/{id}")
+    public String groupDetails(@PathVariable("id") Long groupId, Model model) throws EntityNotFoundException {
+        model.addAttribute("group",permissionSrv.getUserGroup(groupId));
         return "user_group_details";
+    }
+
+    @PostMapping("/index/manage/groups/{id}/permissions")
+    public String addPermissionItem(@PathVariable("id") Long groupId,@ModelAttribute Permission submitObj) throws EntityNotFoundException {
+        UserGroup userGroup = permissionSrv.getUserGroup(groupId);
+        Set<Permission> permissionSet = new HashSet<>();
+        permissionSet.add(submitObj);
+        permissionSrv.changePermission(userGroup,permissionSet);
+        permissionSrv.saveUserGroup(userGroup);
+        return "redirect:/index/manage/groups/" + groupId;
+    }
+
+    @GetMapping("/index/manage/permission/{id}")
+    public ResponseEntity getPermissionItem(@PathVariable("id") Long id) throws EntityNotFoundException {
+        Permission permission = permissionSrv.getOne(id);
+        return ResponseEntity.ok(new RexModel<>(permission));
+    }
+
+    @GetMapping("/index/manage/group/{gid}/permission/delete/{id}")
+    public String deletePermissionItem(@PathVariable("id") Long id, @PathVariable("gid") Long gid){
+        permissionSrv.deletePermission(id);
+        return "redirect:/index/manage/groups/" + gid;
     }
 }
