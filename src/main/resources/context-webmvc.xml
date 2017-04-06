@@ -11,12 +11,7 @@
 
     <!--<mvc:view-controller path="_" view-name="index"/>-->
 
-    <!--<mvc:interceptors>-->
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/api/manage/*"/>-->
-            <!--<bean class="cn.lncsa.bbs.controller"/>-->
-        <!--</mvc:interceptor>-->
-    <!--</mvc:interceptors>-->
+    <!--<import resource="context-webmvc-permissions.xml"/>-->
 
 
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">

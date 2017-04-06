@@ -38,14 +38,24 @@
 ##IV. 参考资料
 
 - 前端
-    - [Bootstrap 中文文档](http://v3.bootcss.com/)
-    - [Bootstrap - Buttons inside List Group Item](http://stackoverflow.com/questions/38373842/bootstrap-buttons-inside-list-group-item) 
-    - [Animate.css](https://daneden.github.io/animate.css/)
-    - [Holder.js](http://holderjs.com/)
-    - [Font Awesome](http://fontawesome.io/)
-    - [Marked](https://github.com/chjj/marked)
-    - [AngularJS ui-router (nested routes)](https://www.codeproject.com/articles/842880/angularjs-ui-router-nested-routes)
-    - [创建一个自定义 jQuery 插件](https://www.ibm.com/developerworks/cn/web/wa-jqplugin/)
+    - 文档资料
+        - [Bootstrap 中文文档](http://v3.bootcss.com/)
+        - [Bootstrap - Buttons inside List Group Item](http://stackoverflow.com/questions/38373842/bootstrap-buttons-inside-list-group-item) 
+        - [Animate.css](https://daneden.github.io/animate.css/)
+        - [创建一个自定义 jQuery 插件](https://www.ibm.com/developerworks/cn/web/wa-jqplugin/)    
+        - [JQuery API Documentation](https://api.jquery.com)
+    - 插件
+        - [Holder.js](http://holderjs.com/)
+        - [Font Awesome](http://fontawesome.io/)
+        - [Marked](https://github.com/chjj/marked)
+        - [jQuery Pagination plugin](https://esimakin.github.io/twbs-pagination/)
+        - [simplePagination.js](http://flaviusmatis.github.io/simplePagination.js/)
+        - [jQuery Serialize Object](https://github.com/macek/jquery-serialize-object)
+        - [Bootstrap Markdown](http://www.codingdrama.com/bootstrap-markdown/)
+        - [Bootstrap validator](http://1000hz.github.io/bootstrap-validator/)
+        - [Showdown](https://github.com/showdownjs/showdown)
+    - 框架以及库
+        - [AngularJS ui-router (nested routes)](https://www.codeproject.com/articles/842880/angularjs-ui-router-nested-routes)
 - 后端
     - Spring Data 与 Hibernate 相关
         - [Spring 4 MVC REST Controller Example (JSON CRUD Tutorial)](http://viralpatel.net/blogs/spring-4-mvc-rest-example-json/)

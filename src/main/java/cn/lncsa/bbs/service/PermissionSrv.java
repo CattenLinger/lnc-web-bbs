@@ -2,6 +2,7 @@ package cn.lncsa.bbs.service;
 
 import cn.lncsa.bbs.exception.EntityNotFoundException;
 import cn.lncsa.bbs.model.Permission;
+import cn.lncsa.bbs.model.User;
 import cn.lncsa.bbs.model.UserGroup;
 import cn.lncsa.bbs.repository.PermissionRepo;
 import cn.lncsa.bbs.repository.UserGroupRepo;
@@ -27,6 +28,7 @@ public class PermissionSrv {
     private UserGroupRepo userGroupRepo;
 
     private UserGroup defaultUserGroup;
+    private UserRepo userRepo;
 
     @Autowired
     public void setPermissionRepo(PermissionRepo permissionRepo) {
@@ -38,12 +40,31 @@ public class PermissionSrv {
         this.userGroupRepo = userGroupRepo;
     }
 
+    @Autowired
+    public void setUserRepo(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
+
     public void saveUserGroup(UserGroup userGroup){
         UserGroup userGroup1 = userGroupRepo.findByName(userGroup.getName());
         if(userGroup1 != null){
             userGroup.replace(userGroup1);
         }
         userGroupRepo.save(userGroup);
+    }
+
+    public Set<Permission> getUserPermissions(User user){
+        if(user.getUserGroup() == null || user.getUserGroup().getPermissions() == null){
+            return null;
+        }
+
+        return user.getUserGroup().getPermissions();
+    }
+
+    public Set<Permission> getUserPermissions(Long userId){
+        User user = userRepo.findOne(userId);
+        if(user == null) return null;
+        return getUserPermissions(user);
     }
 
     public UserGroup getUserGroupByName(String userGroupName) throws EntityNotFoundException {
@@ -96,6 +117,10 @@ public class PermissionSrv {
 
     public Page<UserGroup> findAllUserGroup(Pageable pageable) {
         return userGroupRepo.findAll(pageable);
+    }
+
+    public List<String> findAllUserGroups(){
+        return userGroupRepo.findAllUserGroupNames();
     }
 
     public UserGroup getUserGroup(Long id) throws EntityNotFoundException {

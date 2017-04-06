@@ -286,13 +286,32 @@ public class IndexController {
     @GetMapping("/index/manage/user/{username}")
     public String userDetails(@PathVariable("username") String username, Model model) throws EntityNotFoundException {
         model.addAttribute("user",userSrv.getByUsername(username));
+        model.addAttribute("userGroups",permissionSrv.findAllUserGroups());
         return "user_details";
     }
 
-    @GetMapping("/index/manage/groups")
+    @PostMapping("/index/manage/user/{username}/group")
+    public String updateUserGroup(@PathVariable("username") String username,@RequestParam("userGroup") String groupName) throws EntityNotFoundException {
+        User user = userSrv.getByUsername(username);
+        user.setUserGroup(permissionSrv.getUserGroupByName(groupName));
+        userSrv.save(user);
+        return "redirect:/index/manage/user/" + username;
+    }
+    /*
+    *
+    * Permission Group
+    *
+    * */
+
+    @GetMapping("/index/manage/group_list.html")
     public String listGroups(@RequestParam(value = "page", defaultValue = "0", required = false) int page, Model model){
-        model.addAttribute("page",permissionSrv.findAllUserGroup(new PageRequest(page,20)));
+        model.addAttribute("page",permissionSrv.findAllUserGroup(new PageRequest(page,6)));
         return "user_group_list";
+    }
+
+    @GetMapping("/index/manage/groups")
+    public String listGroups(){
+        return "user_groups";
     }
 
     @PostMapping("/index/manage/groups/{id}")
@@ -309,6 +328,11 @@ public class IndexController {
         return "user_group_details";
     }
 
+    /*
+    *
+    * Permissions
+    *
+    * */
     @PostMapping("/index/manage/groups/{id}/permissions")
     public String addPermissionItem(@PathVariable("id") Long groupId,@ModelAttribute Permission submitObj) throws EntityNotFoundException {
         UserGroup userGroup = permissionSrv.getUserGroup(groupId);

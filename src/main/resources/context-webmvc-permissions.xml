@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/js/**"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/img/**"/>
+            <mvc:exclude-mapping path="/fonts/**"/>
+            <mvc:exclude-mapping path="/tpls/**"/>
+            <!--<mvc:exclude-mapping path="/index/login"/>-->
+            <!--<mvc:exclude-mapping path="/index/logout"/>-->
+            <!--<mvc:exclude-mapping path="/index/article/*"/>-->
+            <!--<mvc:exclude-mapping path="/user/*/head_pic"/>-->
+            <!--<mvc:exclude-mapping path="/user/*/nickname"/>-->
+            <!--<mvc:exclude-mapping path="/user/exist"/>-->
+            <bean class="cn.lncsa.bbs.interceptor.PermissionInterceptor">
+                <property name="defAllowPermissions">
+                    <set>
+                        <bean class="cn.lncsa.bbs.model.Permission">
+                            <property name="url" value="(/)?"/>
+                            <property name="methodPatterns" value="get"/>
+                        </bean>
+                        <bean class="cn.lncsa.bbs.model.Permission">
+                            <property name="url" value="/index(/)?(login|logout)?"/>
+                            <property name="methodPatterns" value="get|post"/>
+                        </bean>
+                        <bean class="cn.lncsa.bbs.model.Permission">
+                            <property name="url" value="/index/article.*"/>
+                            <property name="methodPatterns" value="get"/>
+                        </bean>
+                        <bean class="cn.lncsa.bbs.model.Permission">
+                            <property name="url" value="/user/[0-9]+/(head\\_pic|nickname)"/>
+                            <property name="methodPatterns" value="get"/>
+                        </bean>
+                        <bean class="cn.lncsa.bbs.model.Permission">
+                            <property name="url" value="/user/id/[0-9]+"/>
+                            <property name="methodPatterns" value="get"/>
+                        </bean>
+                        <bean class="cn.lncsa.bbs.model.Permission">
+                            <property name="url" value="/index/exist"/>
+                            <property name="methodPatterns" value="get"/>
+                        </bean>
+                    </set>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>

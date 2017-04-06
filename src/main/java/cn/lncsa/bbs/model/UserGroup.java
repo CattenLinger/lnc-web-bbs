@@ -47,6 +47,7 @@ public class UserGroup {
 
     public void replace(UserGroup userGroup) {
         this.setName(userGroup.getName() == null ? this.getName() : userGroup.getName());
+        this.setDescription(userGroup.description == null ? this.getDescription() : userGroup.getDescription());
     }
 
     public String getDescription() {

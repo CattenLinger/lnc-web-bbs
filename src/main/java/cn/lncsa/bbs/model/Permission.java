@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "permissions")
 public class Permission {
 
-    public final static String METHOD_SPLIT = "|";
+    public final static String METHOD_SPLIT = "\\|";
     public final static String METHOD_PUT = "PUT";
     public final static String METHOD_GET = "GET";
     public final static String METHOD_POST = "POST";
