@@ -44,18 +44,19 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         HttpSession session = request.getSession();
         User userSession = (User) session.getAttribute(UserSrv.SESSION_USER);
 //        if(userSession == null) logger.debug("Guest access, using default permission list");
-        Set<Permission> permissions = getDefAllowPermissions();
+        ThreadLocal<Set<Permission>>  permissions = new ThreadLocal<>();
+        permissions.set(getDefAllowPermissions());
         if(userSession != null){
             Set<Permission> userPermissions = permissionSrv.getUserPermissions(userSession.getId());
-            if(userPermissions != null) permissions.addAll(userPermissions);
+            if(userPermissions != null) permissions.get().addAll(userPermissions);
         }
         String path = request.getRequestURI();
 //        logger.debug("Access url : " + path);
         String reqMethod = request.getMethod().toUpperCase();
 //        logger.debug("Access method :" + reqMethod);
         boolean pass = false;
-        if(permissions != null){
-            for (Permission permission : permissions){
+        if(permissions.get() != null){
+            for (Permission permission : permissions.get()){
                 if(path.matches(permission.getUrl())){
 //                    logger.debug(String.format("Access to %s is allowed. checking if method %s is allowed",path, reqMethod));
                     String[] allowMethods = permission.getMethodPatterns().split(Permission.METHOD_SPLIT);
