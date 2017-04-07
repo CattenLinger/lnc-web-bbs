@@ -1,7 +1,15 @@
 <#global webroot=""/>
-<#global websiteTitle="Lingnan College Software Association BBS" , websiteSubtitle="A simple bbs website" />
+<#global websiteTitle="岭南软件园协会论坛" , websiteSubtitle="一个简单的小论坛" />
 <#global pkey_head_pic = "head_pic", pkey_secret="secret", pkey_nickname="nickname"/>
 <#global def_head_pic = "/img/placeholder-300x300.png"/>
+<#global pkey_list = {
+    "head_pic" : "头像",
+    "gender" : "性别",
+    "phone" : "电话号码",
+    "email" : "邮箱",
+    "birth" : "生日",
+    "nickname" : "昵称"
+} />
 
 <#macro body title>
 <!doctype html>
@@ -35,33 +43,42 @@
             <div><b data-role="m_user_nickname">...</b><br>
                 <small data-role="m_username">...</small>
             </div>
-            <div>User group : <label class="label label-info" data-role="m_user_group">...</label></div>
+            <div>用户组 : <label class="label label-info" data-role="m_user_group">...</label></div>
         </div>
     </div>
     <#else >
-    <b>Welcome, guest</b>
+    <b>游客</b>
     </#if>
 </#macro>
 
 <#macro shortcutItems>
 <div class="list-group">
+    <a class="list-group-item" href="/index">首页</a>
+    <a class="list-group-item" href="/index/articles/topics">话题</a>
     <#if Session.session_user??>
-        <a class="list-group-item" href="/index/self">Self info</a>
-        <a class="list-group-item" href="/index/article/post">Post article</a>
-        <a class="list-group-item" href="/index/manage/users">Users</a>
-        <a class="list-group-item" href="/index/manage/groups">User Groups</a>
+        <a class="list-group-item" href="/index/self">个人信息</a>
+        <a class="list-group-item" href="/index/article/post">发表文章</a>
+        <#if Session.session_user.userGroup??>
+            <#switch Session.session_user.userGroup.name>
+                <#case "superuser">
+                <#case "admin">
+                <a class="list-group-item" href="/index/manage/users">用户</a>
+                <a class="list-group-item" href="/index/manage/groups">用户组</a>
+                <#break >
+            </#switch>
+        </#if>
     <#else >
-        <a class="list-group-item" href="/index/login">Sign in</a>
-        <a class="list-group-item" href="/index/register">Sign up</a>
+        <a class="list-group-item" href="/index/login">登录</a>
+        <a class="list-group-item" href="/index/register">注册</a>
     </#if>
 </div>
 </#macro>
 
 <#macro managerPageShortcuts>
 <div class="list-group">
-    <a class="list-group-item" href="/index/manage/users">Users</a>
-    <a class="list-group-item" href="/index/manage/groups">User Groups</a>
-    <a class="list-group-item" href="/">Back to index</a>
+    <a class="list-group-item" href="/index/manage/users">用户</a>
+    <a class="list-group-item" href="/index/manage/groups">用户组</a>
+    <a class="list-group-item" href="/">返回首页</a>
 </div>
 </#macro>
 
@@ -93,6 +110,14 @@
     <#if (post.topics?? && post.topics?size > 0)>
         <#list post.topics as topic>
         <label class="label label-primary">${topic}</label>
+        </#list>
+    </#if>
+</#macro>
+
+<#macro listPostTagsWithLink post>
+    <#if (post.topics ?? && post.topics?size > 0)>
+        <#list post.topics as topic>
+            <a class="label label-primary" href="/index/articles/topics/${topic}">${topic}</a>
         </#list>
     </#if>
 </#macro>

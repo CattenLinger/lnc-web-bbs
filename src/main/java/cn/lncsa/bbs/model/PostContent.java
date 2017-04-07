@@ -114,6 +114,7 @@ public class PostContent {
         this.setTitle(postContent.getTitle() == null ? this.title : postContent.getTitle());
         this.setModifiedDate(postContent.getModifiedDate() == null ? this.modifiedDate : postContent.getModifiedDate());
         this.setSubtitle(postContent.getSubtitle() == null ? this.subtitle : postContent.getSubtitle());
+        this.setContent(postContent.getContent() == null ? this.content:postContent.getContent());
         this.setTopics(postContent.getTopics());
     }
 }

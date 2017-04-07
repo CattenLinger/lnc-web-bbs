@@ -1,15 +1,15 @@
 <#import "template/main.ftl" as temp>
-<@temp.body title="Group Details">
+<@temp.body title="用户组信息">
 <div class="row">
     <div class="col-md-3">
         <div class="panel panel-info">
             <div class="panel-heading">
-                <b>Group information</b>
+                <b>用户组基本信息</b>
             </div>
             <div class="panel-body">
                 <h4>${group.name}</h4>
-                <label>Description : </label>
-                <p>${group.description!"No descriptions..."}</p>
+                <label>描述 : </label>
+                <p>${group.description!"没有描述"}</p>
             </div>
             <div class="panel-footer">
                 <div class="btn-group pull-right">
@@ -22,9 +22,9 @@
     <div class="col-md-5">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <div class="pull-left"><b>Permissions</b></div>
+                <div class="pull-left"><b>权限</b></div>
                 <div class="pull-right">
-                    <button class="btn btn-success btn-xs" id="btn_add_permission"><span class="glyphicon glyphicon-plus"></span> Add new rule</button>
+                    <button class="btn btn-success btn-xs" id="btn_add_permission"><span class="glyphicon glyphicon-plus"></span> 添加权限</button>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -34,9 +34,9 @@
                         <li class="list-group-item" data-id="${permission.id}">
                             <b>${permission.url}</b>
                             <ul>
-                                <li>Description : ${permission.description!"No descriptions..."}</li>
-                                <li>Method Pattern : ${permission.methodPatterns!"No allowed methods..."}</li>
-                                <li>Policy : ${permission.policyPatterns!"No policy limits."}</li>
+                                <li>描述 : ${permission.description!"没有描述"}</li>
+                                <li>允许的请求方法 : ${permission.methodPatterns!"没有任何方法权限"}</li>
+                                <li>策略（暂时没用） : ${permission.policyPatterns!"无策略限制"}</li>
                             </ul>
                             <div>
                                 <div class="btn pull-right">
@@ -48,7 +48,7 @@
                         </li>
                     </#list>
                 <#else >
-                    <li class="list-group-item disabled">No permission available.</li>
+                    <li class="list-group-item disabled">无任何权限</li>
                 </#if>
             </ul>
         </div>
@@ -56,7 +56,7 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <b>Shortcuts</b>
+                <b>快捷方式</b>
             </div>
             <@temp.managerPageShortcuts/>
         </div>
@@ -68,23 +68,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Create user group</h4>
+                <h4 class="modal-title">创建用户组</h4>
             </div>
             <form id="f_create_group" data-toggle="validator" method="post" action="/index/manage/groups/${group.id}">
                 <div class="modal-body">
                     <input type="hidden" name="id" value="${group.id}">
                     <div class="form-group">
-                        <label for="gf_name" class="control-label">Group Name</label>
+                        <label for="gf_name" class="control-label">用户组名称</label>
                         <input id="gf_name" name="name" value="${group.name}" type="text" maxlength="20" required class="form-control" pattern="[A-Za-z0-9_-]{3,20}">
                     </div>
                     <div class="form-group">
-                        <label for="gf_description">Description</label>
+                        <label for="gf_description">描述</label>
                         <textarea id="gf_description" name="description" class="form-control" rows="5" style="resize: none">${group.description!""}</textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">创建</button>
                 </div>
             </form>
         </div>
@@ -97,31 +97,31 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Add or alert a permission</h4>
+                    <h4 class="modal-title">添加或者更改权限</h4>
                 </div>
                 <form data-toggle="validator" method="post" id="f_alter_permit" action="/index/manage/groups/${group.id}/permissions">
                     <div class="modal-body">
                         <input type="hidden" name="id">
                         <div class="form-group">
-                            <label for="pf_url">Url</label>
+                            <label for="pf_url">路径匹配（正则表达式）</label>
                             <input id="pf_url" type="text" class="form-control" name="url" max="255" required>
                         </div>
                         <div class="form-group">
-                            <label for="pf_description">Description</label>
+                            <label for="pf_description">描述</label>
                             <input id="pf_description" type="text" class="form-control" name="description" max="255">
                         </div>
                         <div class="form-group">
-                            <label for="pf_method_pattern">Method pattern (regex)</label>
+                            <label for="pf_method_pattern">允许的请求方法</label>
                             <input id="pf_method_pattern" name="methodPatterns" max="255" required class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="pf_policy">Policy</label>
+                            <label for="pf_policy">策略（暂时没用）</label>
                             <input id="pf_policy" name="policyPatterns" max="255" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
                     </div>
                 </form>
             </div>

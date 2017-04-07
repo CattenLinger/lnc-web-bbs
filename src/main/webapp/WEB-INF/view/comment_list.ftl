@@ -31,22 +31,22 @@
                     <div>
                         <div class="pull-left">
                             <div><b>${nickname}</b></div>
-                            <div><small>create at ${item.createDate?string('yyyy-MM-dd hh:mm:ss')}</small></div>
+                            <div><small>创建于 ${item.createDate?string('yyyy-MM-dd hh:mm:ss')}</small></div>
                         </div>
                         <div class="btn-group btn-group-sm pull-right">
                             <button class="btn btn-primary" data-role="c_reply">
-                                <span class="glyphicon glyphicon-share-alt"></span> Reply</button>
+                                <span class="glyphicon glyphicon-share-alt"></span> 回复</button>
                             <#if Session.session_user??>
                                 <#if Session.session_user.id == item.author.id>
                                     <button class="btn btn-warning" data-role="c_delete">
-                                        <span class="glyphicon glyphicon-trash"></span> Delete</button>
+                                        <span class="glyphicon glyphicon-trash"></span> 删除</button>
                                 </#if>
                             </#if>
                         </div>
                         <div class="clearfix"></div>
                     </div>
                     <#if item.relateTo??>
-                        <p>reply to @${item.relateTo.author.username} : </p>
+                        <p>回复 @${item.relateTo.author.username} : </p>
                     </#if>
                     <p class="lnc-md-content" data-role="markdown-content">${item.content!""}</p>
                 </div>
@@ -54,6 +54,6 @@
         </li>
     </#list>
 <#else >
-    <li class="list-group-item disabled">Empty..</li>
+    <li class="list-group-item disabled">暂无评论</li>
 </#if>
 </ul>

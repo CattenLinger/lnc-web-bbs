@@ -1,11 +1,11 @@
 <#import "template/main.ftl" as temp>
-<@temp.body title="User Details">
+<@temp.body title="用户详情">
 <div class="row">
     <div class="col-md-8">
         <form method="post" action="/index/manage/user/${user.username}/group">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h2>${user.username} - Profile</h2>
+                    <h2>${user.username} - 信息</h2>
                 </div>
                 <div class="panel-body">
                     <div class="media">
@@ -24,11 +24,11 @@
                             <img width="128" height="128" src="${userHeadPic}">
                         </div>
                         <div class="media-body">
-                            <label>Username</label>
+                            <label>用户名</label>
                             <div class="form-control">${user.username}</div>
-                            <label>User Id</label>
+                            <label>用户 Id</label>
                             <div class="form-control">${user.id}</div>
-                            <label>User Group</label>
+                            <label>用户组</label>
                             <div>
                                 <select class="selectpicker" name="userGroup">
                                     <#if (userGroups?? && userGroups?size > 0)>
@@ -41,22 +41,22 @@
                                         </#list>
                                     </#if>
                                 </select>
-                                <input type="submit" value="Update" class="btn btn-success">
+                                <input type="submit" value="更新" class="btn btn-success">
                             </div>
-                            <label>Sign up Date</label>
+                            <label>注册日期</label>
                             <div><#if user.registerDate??>${user.registerDate?string("yyyy-mm-dd")}<#else >
-                                Null</#if></div>
+                                无记录</#if></div>
                             <table class="table" id="p_table">
                                 <thead>
                                 <tr>
-                                    <td align="center">Profile name</td>
-                                    <td align="left" width="80%">Value</td>
+                                    <td align="center">个人信息项</td>
+                                    <td align="left" width="80%">值</td>
                                 </tr>
                                 </thead>
                                 <#if (user.profile?? && user.profile?size > 0)>
                                     <#list user.profile as profile>
                                         <tr>
-                                            <td align="center">${profile.key}</td>
+                                            <td align="center">${pkey_list[profile.key]!"${profile.key}"}</td>
                                             <td align="left">
                                                 <@temp.cutString text=profile.value length=50 suffix="..." />
                                             </td>
@@ -73,7 +73,7 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <b>Shortcuts</b>
+                <b>快捷方式</b>
             </div>
             <@temp.managerPageShortcuts/>
         </div>

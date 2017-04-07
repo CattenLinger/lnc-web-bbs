@@ -1,12 +1,10 @@
 <#import "template/main.ftl" as temp>
-<@temp.body title="Articles">
+<@temp.body title="文章">
 <div class="row">
     <div class="col-sm-8">
         <#if message?? >
             <#if message == "edit">
-                <div class="alert alert-success">Posting success!</div>
-            <#elseif message == "logout">
-                <div class="alert alert-success">Logout success</div>
+                <div class="alert alert-success">发表成功</div>
             </#if>
         </#if>
         <div class="panel panel-default">
@@ -15,7 +13,7 @@
                     <#switch rend_type>
                         <#case "recent">
                         <#default >
-                            <h2>Recent Articles</h2>
+                            <h2>最近文章</h2>
                             <#break >
                     </#switch>
                 </#if>

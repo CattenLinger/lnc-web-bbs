@@ -5,11 +5,11 @@
         <a href="/index/manage/groups/${group.id}" class="list-group-item">
             <div>
                 <b>${group.name}</b>
-                <p><#if group.description??>${group.description}<#else >No descriptions...</#if></p>
+                <p><#if group.description??>${group.description}<#else ><small>没有描述</small></#if></p>
             </div>
         </a>
     </#list>
 <#else >
-    <a class="list-group-item disabled">No data...</a>
+    <a class="list-group-item disabled">没有数据</a>
 </#if>
 </div>

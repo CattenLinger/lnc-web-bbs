@@ -1,5 +1,5 @@
 <#import "template/main.ftl" as temp>
-<@temp.body title="LNCSA - BBS">
+<@temp.body title="首页">
 <div class="row">
     <div class="col-sm-8">
         <div id="recent_post_list" style="padding: 0; margin: 0"></div>
@@ -10,9 +10,9 @@
     <div class="col-sm-4">
         <#if message?? >
             <#if message == "register">
-                <div class="alert alert-success">Sign up success</div>
+                <div class="alert alert-success">登录成功</div>
             <#elseif message == "logout">
-                <div class="alert alert-success">Logout success</div>
+                <div class="alert alert-success">登出成功</div>
             </#if>
         </#if>
         <div class="panel panel-default">

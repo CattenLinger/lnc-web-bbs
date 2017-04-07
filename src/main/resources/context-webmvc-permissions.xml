@@ -20,7 +20,7 @@
                 <property name="defAllowPermissions">
                     <set>
                         <bean class="cn.lncsa.bbs.model.Permission">
-                            <property name="url" value="(/)?"/>
+                            <property name="url" value="/"/>
                             <property name="methodPatterns" value="get"/>
                         </bean>
                         <bean class="cn.lncsa.bbs.model.Permission">
@@ -32,7 +32,7 @@
                             <property name="methodPatterns" value="get"/>
                         </bean>
                         <bean class="cn.lncsa.bbs.model.Permission">
-                            <property name="url" value="/user/[0-9]+/(head\\_pic|nickname)"/>
+                            <property name="url" value="/user/[0-9]+/(head_pic|nickname)"/>
                             <property name="methodPatterns" value="get"/>
                         </bean>
                         <bean class="cn.lncsa.bbs.model.Permission">

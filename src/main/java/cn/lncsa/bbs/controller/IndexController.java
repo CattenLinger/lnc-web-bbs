@@ -178,6 +178,25 @@ public class IndexController {
         return "redirect:/index/self?refer=pDeleted";
     }
 
+    @GetMapping("/index/self/password")
+    public String updatePassword(){
+        return "password_change";
+    }
+
+    @PostMapping("/index/self/password")
+    public String updatePassword(@RequestParam("originpw") String origin,@RequestParam("newpw") String newPassword, HttpSession session) throws EntityNotFoundException {
+        User currentUser = (User) session.getAttribute(UserSrv.SESSION_USER);
+        User user = userSrv.get(currentUser.getId());
+        if(origin.equals(user.getPassword())){
+            user.setPassword(newPassword);
+            userSrv.save(user);
+            session.removeAttribute(UserSrv.SESSION_USER);
+            return "redirect:/index/login";
+        }else {
+            return "redirect:/index/self";
+        }
+    }
+
     /*
     *
     * Post
@@ -218,7 +237,7 @@ public class IndexController {
         }
         origin.setModifiedDate(current);
         postContentSrv.save(origin);
-        return "redirect:/index/article?refer=edit";
+        return "redirect:/index/article/" + origin.getId();
     }
 
     @GetMapping("/index/article/post")
@@ -231,6 +250,23 @@ public class IndexController {
         PostContent postContent = postContentSrv.get(articleId);
         model.addAttribute("post",new PostContentModel(postContent));
         return "post";
+    }
+
+    @GetMapping("/index/article/{id}/edit")
+    public String editArticle(@PathVariable("id") Long articleId, Model model) throws EntityNotFoundException {
+        PostContent postContent = postContentSrv.get(articleId);
+        model.addAttribute("post",postContent);
+        return "post_article";
+    }
+
+    @GetMapping("/index/article/{id}/delete")
+    public String delArticle(@PathVariable("id") Long articleId, HttpSession session) throws EntityNotFoundException, ForbiddenException {
+        PostContent postContent = postContentSrv.get(articleId);
+        User sessionUser = (User)session.getAttribute(UserSrv.SESSION_USER);
+        if(sessionUser != null && sessionUser.getId().equals(postContent.getAuthor().getId()))
+        postContentSrv.deletePost(postContent);
+        else throw new ForbiddenException("Not your post!");
+        return "redirect:/index";
     }
 
     /*
@@ -264,6 +300,29 @@ public class IndexController {
         model.addAttribute("page",postContentSrv.getArticleComments(
                 articleId,new PageRequest(page,10, Sort.Direction.DESC,"createDate")));
         return "comment_list";
+    }
+    /*
+    *
+    * Tags
+    *
+    * */
+
+    @GetMapping("/index/articles/topics")
+    public String listTopics(Model model){
+        model.addAttribute("topics",postContentSrv.getAllTopics());
+        return "topics";
+    }
+
+    @GetMapping("/index/articles/topics/{topic}")
+    public String topicArticle(@PathVariable("topic")String topic, Model model){
+        model.addAttribute("current_topic",topic);
+        return "topics";
+    }
+
+    @GetMapping("/index/articles/topics/{topic}/list.html")
+    public String topicArticles(@PathVariable("topic") String topic,@RequestParam(value = "page",defaultValue = "0") int page, Model model){
+        model.addAttribute("pageObj",postContentSrv.findPostsByTopic(topic,new PageRequest(page,6)));
+        return "article_list";
     }
 
     /*

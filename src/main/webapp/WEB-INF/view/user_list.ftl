@@ -25,12 +25,12 @@
                 </div>
                 <div class="media-body">
                     <div><b>${nickname}(@${user.username})</b></div>
-                    <div>Group : <#if user.userGroup??>${user.userGroup.name}<#else>[null]</#if></div>
+                    <div>用户组 : <#if user.userGroup??>${user.userGroup.name}<#else>[null]</#if></div>
                 </div>
             </div>
         </a>
     </#list>
 <#else >
-    <a class="list-group-item disabled">No data</a>
+    <a class="list-group-item disabled">无数据</a>
 </#if>
 </div>

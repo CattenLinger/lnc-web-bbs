@@ -1,5 +1,5 @@
 <#import "template/main.ftl" as temp>
-<@temp.body title="User Groups">
+<@temp.body title="用户组">
 <div class="row">
     <div class="col-md-8">
         <div id="user_group_wrapper"></div>
@@ -10,16 +10,16 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <b>Shortcuts</b>
+                <b>快捷方式</b>
             </div>
             <@temp.managerPageShortcuts/>
         </div>
         <div class="panel panel-success">
             <div class="panel-heading">
-                <b>Operates</b>
+                <b>操作</b>
             </div>
             <div class="list-group">
-                <a class="list-group-item" href="#" id="btn_create_group"><span class="glyphicon glyphicon-plus"></span> Create new user group</a>
+                <a class="list-group-item" href="#" id="btn_create_group"><span class="glyphicon glyphicon-plus"></span>创建新用户组</a>
             </div>
         </div>
     </div>
@@ -30,23 +30,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Create user group</h4>
+                <h4 class="modal-title" id="myModalLabel">创建用户组</h4>
             </div>
             <form id="f_create_group" data-toggle="validator">
                 <div class="modal-body">
-                    <div class="alert alert-danger hidden">Failed, maybe you have no permission.</div>
+                    <div class="alert alert-danger hidden">创建失败，可能你没有权限</div>
                     <div class="form-group">
-                        <label for="gf_name" class="control-label">Group Name</label>
+                        <label for="gf_name" class="control-label">用户组名称</label>
                         <input id="gf_name" name="data[name]" type="text" maxlength="20" required class="form-control" pattern="[A-Za-z0-9_-]{3,20}">
                     </div>
                     <div class="form-group">
-                        <label for="gf_description">Description</label>
+                        <label for="gf_description">描述</label>
                         <textarea id="gf_description" name="data[description]" class="form-control" rows="5" style="resize: none"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">创建</button>
                 </div>
             </form>
         </div>

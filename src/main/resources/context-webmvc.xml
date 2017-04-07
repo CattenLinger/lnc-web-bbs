@@ -11,8 +11,7 @@
 
     <!--<mvc:view-controller path="_" view-name="index"/>-->
 
-    <!--<import resource="context-webmvc-permissions.xml"/>-->
-
+    <import resource="context-webmvc-permissions.xml"/>
 
     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
         <property name="order" value="1"/>

@@ -10,8 +10,8 @@
                 <div class="media-body">
                     <h4>${post.title}</h4>
                     <p>${post.subtitle!""}</p>
-                    <small>create at ${post.createDate?string('yyyy-MM-dd hh:mm:ss')}</small>
-                    <small>latest modified at ${post.modifiedDate?string('yyyy-MM-dd hh:mm:ss')}</small>
+                    <small>创建于 ${post.createDate?string('yyyy-MM-dd hh:mm:ss')}</small>
+                    <small>最后修改于 ${post.modifiedDate?string('yyyy-MM-dd hh:mm:ss')}</small>
                     <div><@temp.listPostTags post=post/></div>
                 </div>
             </div>

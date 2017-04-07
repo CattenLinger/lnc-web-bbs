@@ -6,18 +6,25 @@
         <div class="pull-left">
             <p>author : ${post.authorName}</p>
             <div>
-                <small>create at  ${post.createDate?string('yyyy-MM-dd hh:mm:ss')}, latest modified
-                    at  ${post.modifiedDate?string('yyyy-MM-dd hh:mm:ss')}</small>
+                <small>创建于  ${post.createDate?string('yyyy-MM-dd hh:mm:ss')}, 最后修改日期 ${post.modifiedDate?string('yyyy-MM-dd hh:mm:ss')}</small>
             </div>
-            <div><@temp.listPostTags post = post/></div>
+            <div><@temp.listPostTagsWithLink post = post/></div>
         </div>
-        <div class="pull-right"><a class="btn btn-primary" href="/index">Back</a></div>
+        <div class="pull-right">
+            <a class="btn btn-primary" href="/index">返回</a>
+            <#if Session.session_user??>
+                <#if Session.session_user.id == post.postContent.author.id >
+                    <a class="btn btn-primary" href="/index/article/${post.id}/edit">编辑</a>
+                    <a class="btn btn-danger" href="/index/article/${post.id}/delete">删除</a>
+                </#if>
+            </#if>
+        </div>
         <div class="clearfix"></div>
     </div>
     <section id="post_body"></section>
     <hr>
     <div class="page-header">
-        <h3>Recent Comments</h3>
+        <h3>最近的评论</h3>
     </div>
     <div class="row">
         <div class="col-md-8">
@@ -26,24 +33,23 @@
         </div>
         <div class="col-md-4">
             <form data-toggle="validator" id="comment_form">
+                <div class="alert alert-warning hidden" id="fc_alert"></div>
                 <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        Create commit
-                    </div>
+                    <div class="panel-heading">创建评论</div>
                     <div class="panel-body" align="center"
                          style="display: ${(!Session.session_user??)?string("block","none")}">
                         <div class="page-header">
-                            <h3>You haven't login yet...</h3>
+                            <h3>需要登录才能发表评论</h3>
                         </div>
-                        <a href="/index/login" class="btn btn-primary">Go login</a>
+                        <a href="/index/login" class="btn btn-primary">登录页面</a>
                     </div>
                     <div style="display: ${(Session.session_user??)?string("block","none")}">
                         <input type="hidden" id="fc_relateTo">
                         <textarea class="form-control" id="fc_content" name="data[content]"
                                   data-toggle="validator" required></textarea>
                         <div class="panel-footer">
-                            <input id="fc_submit_btn" type="submit" class="btn btn-primary" value="Submit">
-                            <button id="fc_clear_relate" type="button" class="btn btn-warning hidden">Cancel reply</button>
+                            <input id="fc_submit_btn" type="submit" class="btn btn-primary" value="评论">
+                            <button id="fc_clear_relate" type="button" class="btn btn-warning hidden">取消回复</button>
                         </div>
                     </div>
                 </div>
@@ -68,7 +74,8 @@
             input : $("#fc_content"),
             relateTo : $("#fc_relateTo"),
             btnRelateTo : $("#fc_clear_relate"),
-            btnSubmit : $("#fc_submit_btn")
+            btnSubmit : $("#fc_submit_btn"),
+            alert : $("#fc_alert")
         };
 
         loadComments(formView,0);
@@ -91,18 +98,21 @@
         $(formView.form).validator().on("submit",function (e) {
             if(!e.isDefaultPrevented()){
                 $(formView.btnSubmit).addClass("disabled");
-                console.debug($(formView.form).serializeJSON());
+//                console.debug($(formView.form).serializeJSON());
                 $.post(
                         "/article/${post.id}/comments.html",
                         $(formView.form).serializeJSON(),
                         function (content, status, xhr) {
                             switch (status){
                                 case "success":
-                                    console.debug(content);
+//                                    console.debug(content);
                                     loadComments(formView,0);
+                                    $(formView.alert).addClass("hidden");
                                     break;
-                                case "error":
-                                    console.debug(xhr.status);
+                                default:
+//                                    console.debug(xhr.status);
+                                    $(formView.alert).text("你没有评论的权限。");
+                                    $(formView.alert).removeClass("hidden");
                                     break;
                             }
 

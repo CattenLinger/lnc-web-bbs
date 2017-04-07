@@ -1,5 +1,5 @@
 <#import "template/main.ftl" as temp>
-<@temp.body title="Users">
+<@temp.body title="用户">
 <div class="row">
     <div class="col-md-8">
         <div id="user_list_wrapper"></div>
@@ -10,7 +10,7 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <b>Shortcuts</b>
+                <b>快捷方式</b>
             </div>
             <@temp.managerPageShortcuts/>
         </div>
