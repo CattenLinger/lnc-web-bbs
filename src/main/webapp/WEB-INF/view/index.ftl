@@ -21,6 +21,7 @@
             </div>
             <@temp.shortcutItems/>
         </div>
+        <@temp.indexManagerShortcutPanel />
     </div>
 </div>
 </@temp.body>

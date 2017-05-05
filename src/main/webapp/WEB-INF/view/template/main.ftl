@@ -58,20 +58,27 @@
     <#if Session.session_user??>
         <a class="list-group-item" href="/index/self">个人信息</a>
         <a class="list-group-item" href="/index/article/post">发表文章</a>
-        <#if Session.session_user.userGroup??>
-            <#switch Session.session_user.userGroup.name>
-                <#case "superuser">
-                <#case "admin">
-                <a class="list-group-item" href="/index/manage/users">用户</a>
-                <a class="list-group-item" href="/index/manage/groups">用户组</a>
-                <#break >
-            </#switch>
-        </#if>
     <#else >
         <a class="list-group-item" href="/index/login">登录</a>
         <a class="list-group-item" href="/index/register">注册</a>
     </#if>
 </div>
+</#macro>
+
+<#macro indexManagerShortcutPanel>
+    <#if Session.session_user?? && Session.session_user.userGroup??>
+    <#if (Session.session_user.userGroup.name == "superuser" || Session.session_user.userGroup.name == "admin")>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            用户管理
+        </div>
+        <div class="list-group">
+            <a class="list-group-item" href="/index/manage/users">用户</a>
+            <a class="list-group-item" href="/index/manage/groups">用户组</a>
+        </div>
+    </div>
+    </#if>
+    </#if>
 </#macro>
 
 <#macro managerPageShortcuts>
@@ -187,6 +194,7 @@
 <#macro _import_css>
 <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
 <!--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+<#--<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">-->
 <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/animate.css/3.5.2/animate.css">
 <link rel="stylesheet" type="text/css"

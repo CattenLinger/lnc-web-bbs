@@ -10,12 +10,6 @@
             <mvc:exclude-mapping path="/img/**"/>
             <mvc:exclude-mapping path="/fonts/**"/>
             <mvc:exclude-mapping path="/tpls/**"/>
-            <!--<mvc:exclude-mapping path="/index/login"/>-->
-            <!--<mvc:exclude-mapping path="/index/logout"/>-->
-            <!--<mvc:exclude-mapping path="/index/article/*"/>-->
-            <!--<mvc:exclude-mapping path="/user/*/head_pic"/>-->
-            <!--<mvc:exclude-mapping path="/user/*/nickname"/>-->
-            <!--<mvc:exclude-mapping path="/user/exist"/>-->
             <bean class="cn.lncsa.bbs.interceptor.PermissionInterceptor">
                 <property name="defAllowPermissions">
                     <set>
@@ -24,7 +18,7 @@
                             <property name="methodPatterns" value="get"/>
                         </bean>
                         <bean class="cn.lncsa.bbs.model.Permission">
-                            <property name="url" value="/index(/)?(login|logout)?"/>
+                            <property name="url" value="/index(/)?(login|logout|register)?"/>
                             <property name="methodPatterns" value="get|post"/>
                         </bean>
                         <bean class="cn.lncsa.bbs.model.Permission">
